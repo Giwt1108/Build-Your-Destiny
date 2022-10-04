@@ -1,34 +1,43 @@
 package BuildYourDestiny.Game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import Screens.Splash;
+import com.badlogic.gdx.Game;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class MainGame extends ApplicationAdapter {
-	private SpriteBatch batch;
-	private Texture image;
+public class MainGame extends Game {
+	
+    
+    public final String Title = "Game Turorial 1.0.0.0.0";
+    
+    @Override
+    public void create() {
+        setScreen(new Splash());
+    }
 
-	@Override
-	public void create() {
-		batch = new SpriteBatch();
-		image = new Texture("libgdx.png");
-	}
+    @Override
+    public void render() {
+        super.render();	
+    }
 
-	@Override
-	public void render() {
-		Gdx.gl.glClearColor(0.15f, 0.15f, 0.2f, 1f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(image, 140, 210);
-		batch.end();
-	}
-
-	@Override
-	public void dispose() {
-		batch.dispose();
-		image.dispose();
-	}
+    @Override
+    public void dispose() {
+        super.dispose();
+    }
+    
+    @Override
+    public void resize(int width, int height){
+        super.resize(width,height);
+    }
+    
+    @Override
+    public void pause(){
+        super.pause();
+        
+    }
+    
+    @Override
+    public void resume(){
+        super.resume();
+        
+    }
 }

@@ -64,7 +64,7 @@ public class MainMenu implements Screen{
         
         Gdx.input.setInputProcessor(stage);
         
-        atlas = new TextureAtlas("ui/button.atlas");
+        atlas = new TextureAtlas("ui/Button.atlas");
         skin = new Skin(atlas);
         
         table = new Table(skin);

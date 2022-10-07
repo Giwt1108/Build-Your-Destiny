@@ -80,16 +80,14 @@ public class Room {
     }
     
     public void render(OrthographicCamera camera){
-        float oldX, oldY;
         renderer.setView(camera);
         renderer.render();
         
         renderer.getBatch().begin();
-        oldX = player.getX();
-        oldY = player.getY();
+        
         player.update(Gdx.graphics.getDeltaTime());
-        actualicePlayerX(oldX);
-        actualicePlayerY(oldY);
+        actualicePlayerX(player.getOldX());
+        actualicePlayerY(player.getOldY());
         player.draw(renderer.getBatch());
         renderer.getBatch().end();  
     }

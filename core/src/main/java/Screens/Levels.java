@@ -30,10 +30,9 @@ public class Levels implements Screen {
     @Override
     public void show() { 
         camera = new OrthographicCamera(); 
-        room = new Room("Maps/Room1.tmx", new Player(sprite));
+        room = new Room("Maps/Room2.tmx", new Player(sprite));
         
-        renderer = room.getRenderer();
-        
+        renderer = room.getRenderer(); 
     }
 
     @Override
@@ -45,7 +44,6 @@ public class Levels implements Screen {
         camera.update();
         
         room.render(camera);
-    
     }
 
     @Override

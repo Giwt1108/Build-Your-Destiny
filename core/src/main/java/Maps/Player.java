@@ -21,8 +21,9 @@ public class Player extends Sprite implements InputProcessor{
     
     private Vector2 velocity = new Vector2();
     
-    private float speed = 60*2, gravity = 60*1.8f;
+    private final float speed = 60*2.5f;
     private TiledMapTileLayer collisionLayer;
+    private boolean collitedX,collitedY;
     
     public Player(Sprite sprite, TiledMapTileLayer collisionLayer){
         super(sprite);
@@ -47,21 +48,21 @@ public class Player extends Sprite implements InputProcessor{
     
     private void actualiceY(float delta, float width, float height){
         float oldY = getY();
-        boolean collitedY = false;  
+        collitedY = false;  
         
-        setY(oldY+velocity.y*delta);
+        setY(getY()+velocity.y*delta);
         
         if(oldY!=getY()){
             if(velocity.y<0){
                 //BottomLeft
-                collitedY = cellIsBlocked(((getX())/width), ((getY()-getHeight()/2)/height));
+                collitedY = cellIsBlocked(((getX())/width), ((getY())/height));
                 //BottomMidle
                 if(!collitedY){
-                    collitedY = cellIsBlocked(((getX()+getWidth()/2)/width), ((getY()-getHeight()/2)/height));
+                    collitedY = cellIsBlocked(((getX()+getWidth()/2)/width), ((getY())/height));
                 }
                 //BottomRight
                 if(!collitedY){                
-                    collitedY = cellIsBlocked(((getX()+getWidth())/width), ((getY()-getHeight()/2)/height));
+                    collitedY = cellIsBlocked(((getX()+getWidth())/width), (getY())/height);
                 }
 
             }else if(velocity.y>0){
@@ -78,13 +79,14 @@ public class Player extends Sprite implements InputProcessor{
             if(collitedY){
                 setY(oldY);
                 velocity.y = 0;
+                //System.out.println("Blocked y");
             }
         }
     }
     
     private void actualiceX(float delta, float width, float height){
         float oldX = getX(); 
-        boolean collitedX = false;
+        collitedX = false;
         setX(getX()+velocity.x*delta);
         if(oldX!=getX()){
             if(velocity.x<0){
@@ -109,6 +111,7 @@ public class Player extends Sprite implements InputProcessor{
             }
             if(collitedX){
                 setX(oldX);
+                //System.out.println("Blocked x");
                 velocity.x = 0;
             }
         }
@@ -123,16 +126,13 @@ public class Player extends Sprite implements InputProcessor{
         return speed;
     }
 
-    public float getGravity() {
-        return gravity;
-    }
-
     public TiledMapTileLayer getCollisionLayer() {
         return collisionLayer;
     }
 
     private boolean cellIsBlocked(float x, float y) {
-        Cell cell = collisionLayer.getCell((int) x, (int) y);
+        System.out.println((int) x+", "+ (int) y+"||"+ x+", "+ y/3.2);
+        Cell cell = collisionLayer.getCell((int) (x/1.6), (int) (y/1.6));
         return (cell!=null)&&(cell.getTile()!=null)&&(cell.getTile().getProperties().containsKey("blocked"));
     }
 
@@ -140,16 +140,24 @@ public class Player extends Sprite implements InputProcessor{
     public boolean keyDown(int keycode) {
         switch(keycode){
             case Keys.W:
-                velocity.y = speed;
+                if(!collitedY){
+                    velocity.y = speed;
+                }
                 break;
             case Keys.A:
-                velocity.x = -speed;
+                if(!collitedX){
+                    velocity.x = -speed;
+                }
                 break;
             case Keys.S:
-                velocity.y = -speed;
+                if(!collitedY){
+                    velocity.y = -speed;
+                }
                 break;
             case Keys.D:
-                velocity.x = speed;
+                if(!collitedX){
+                    velocity.x = speed;
+                }
                 break;
         }
                 
@@ -162,9 +170,11 @@ public class Player extends Sprite implements InputProcessor{
             case Keys.W:
             case Keys.S:
                 velocity.y= 0;
+                break;
             case Keys.A:
             case Keys.D:
                 velocity.x= 0;
+                break;
         }
         return true;
     }

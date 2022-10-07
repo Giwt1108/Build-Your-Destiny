@@ -31,6 +31,8 @@ public class Levels implements Screen {
     public void show() { 
         camera = new OrthographicCamera();
         room = new Room();
+        
+        
         renderer = room.getRenderer();
         player = new Player(sprite,room.getCollitionLayer());
         player.setPosition(6*player.getCollisionLayer().getTileWidth(), 6*player.getCollisionLayer().getTileHeight());
@@ -43,6 +45,9 @@ public class Levels implements Screen {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
+        camera.position.set(player.getX()+player.getWidth()/2,player.getY()+player.getHeight()/2,0);
+        camera.update();
+        
         room.render(camera);
         
         renderer.getBatch().begin();
@@ -51,10 +56,9 @@ public class Levels implements Screen {
     }
 
     @Override
-    public void resize(int i, int i1) {
-        camera.viewportWidth = i;
-        camera.viewportHeight = i1;
-        camera.update();
+    public void resize(int width, int height) {
+        camera.viewportWidth = width/1.3f;
+        camera.viewportHeight = height/1.3f;
     }
 
     @Override

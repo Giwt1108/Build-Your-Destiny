@@ -21,36 +21,43 @@ public class Player extends Sprite implements InputProcessor{
     
     private Vector2 velocity = new Vector2();
     
-    private final float speed = 60*2.5f;
+    private final float speed = 60*5f;
     private TiledMapTileLayer collisionLayer;
     private boolean collitedX,collitedY;
     
-    public Player(Sprite sprite, TiledMapTileLayer collisionLayer){
+    private float scaleX;
+    private float scaleY;
+    
+    public Player(Sprite sprite){
         super(sprite);
-        this.collisionLayer = collisionLayer;
+        //this.collisionLayer = collisionLayer;
         velocity.x=0;
         velocity.y=0;
+        //scaleX = ((float) collisionLayer.getWidth())/collisionLayer.getTileWidth();
+        //scaleY = ((float) collisionLayer.getHeight())/collisionLayer.getTileHeight();
+        collitedX = false;
+        collitedY = false;
+        //System.out.println(scaleX+", "+collisionLayer.getWidth());
     }
     
     public void draw(Batch spriteBatch) {
-        update(Gdx.graphics.getDeltaTime());
         super.draw(spriteBatch);
     }
     
     public void update(float delta){
 
-        float tileWidth = collisionLayer.getWidth(),tileHeight = collisionLayer.getHeight();
+        //float tileWidth = collisionLayer.getWidth(),tileHeight = collisionLayer.getHeight();
            
-        actualiceX(delta, tileWidth,tileHeight);
-        actualiceY(delta, tileWidth,tileHeight); 
+        setX(getX()+velocity.x*delta);
+        //actualiceX(delta, tileWidth,tileHeight);
+        setY(getY()+velocity.y*delta);
+        //actualiceY(delta, tileWidth,tileHeight);
         
     }
     
-    private void actualiceY(float delta, float width, float height){
+    /*private void actualiceY(float delta, float width, float height){
         float oldY = getY();
         collitedY = false;  
-        
-        setY(getY()+velocity.y*delta);
         
         if(oldY!=getY()){
             if(velocity.y<0){
@@ -86,8 +93,6 @@ public class Player extends Sprite implements InputProcessor{
     
     private void actualiceX(float delta, float width, float height){
         float oldX = getX(); 
-        collitedX = false;
-        setX(getX()+velocity.x*delta);
         if(oldX!=getX()){
             if(velocity.x<0){
                 //topLeft
@@ -111,17 +116,25 @@ public class Player extends Sprite implements InputProcessor{
             }
             if(collitedX){
                 setX(oldX);
-                //System.out.println("Blocked x");
                 velocity.x = 0;
+                //System.out.println("Blocked x");
             }
         }
         
-    }
+    }*/
     
     public Vector2 getVelocity() {
         return velocity;
     }
-
+    
+    public void setVelocityX(float velX){
+        velocity.x = velX;
+    }
+    
+    public void setVelocityY(float velY){
+        velocity.x = velY;
+    }
+    
     public float getSpeed() {
         return speed;
     }
@@ -129,10 +142,26 @@ public class Player extends Sprite implements InputProcessor{
     public TiledMapTileLayer getCollisionLayer() {
         return collisionLayer;
     }
+    
+    public void setCollitionX(boolean collision){
+        collitedX = collision;
+    }
+    
+    public void setCollitionY(boolean collision){
+        collitedY = collision;
+    }
+    
+    public boolean getCollitionX(){
+        return collitedX;
+    }
+    
+    public boolean getCollitionY(){
+        return collitedY;
+    }
 
     private boolean cellIsBlocked(float x, float y) {
-        System.out.println((int) x+", "+ (int) y+"||"+ x+", "+ y/3.2);
-        Cell cell = collisionLayer.getCell((int) (x/1.6), (int) (y/1.6));
+        //System.out.println(x+", "+y +"//" + scaleX+", "+scaleY);
+        Cell cell = collisionLayer.getCell((int) (scaleX*x), (int) (scaleY*y));
         return (cell!=null)&&(cell.getTile()!=null)&&(cell.getTile().getProperties().containsKey("blocked"));
     }
 

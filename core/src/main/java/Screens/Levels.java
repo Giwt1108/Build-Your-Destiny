@@ -29,15 +29,11 @@ public class Levels implements Screen {
 
     @Override
     public void show() { 
-        camera = new OrthographicCamera();
-        room = new Room();
+        camera = new OrthographicCamera(); 
+        room = new Room("Maps/Room2.tmx", new Player(sprite));
         
         
         renderer = room.getRenderer();
-        player = new Player(sprite,room.getCollitionLayer());
-        player.setPosition(6*player.getCollisionLayer().getTileWidth(), 6*player.getCollisionLayer().getTileHeight());
-        
-        Gdx.input.setInputProcessor(player);
     }
 
     @Override
@@ -45,14 +41,11 @@ public class Levels implements Screen {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
-        camera.position.set(player.getX()+player.getWidth()/2,player.getY()+player.getHeight()/2,0);
+        camera.position.set(room.getPlayer().getX()+room.getPlayer().getWidth()/2,room.getPlayer().getY()+room.getPlayer().getHeight()/2,0);
         camera.update();
         
         room.render(camera);
-        
-        renderer.getBatch().begin();
-        player.draw(renderer.getBatch());
-        renderer.getBatch().end();
+    
     }
 
     @Override

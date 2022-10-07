@@ -4,12 +4,21 @@
  */
 package Maps;
 
+import Entities.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.badlogic.gdx.utils.Array;
+import java.util.Iterator;
+
+
 
 /**
  *
@@ -42,6 +51,32 @@ public class Room {
         scaleX = ((float) collisionLayer.getWidth())/collisionLayer.getTileWidth();
         scaleY = ((float) collisionLayer.getHeight())/collisionLayer.getTileHeight();
         
+        initAnimation();
+        
+        
+    }
+    
+    private void initAnimation(){
+        Array<StaticTiledMapTile> frameTiles = new Array<StaticTiledMapTile>(3);
+        
+        Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("Room").iterator();
+        while(tiles.hasNext()){
+            TiledMapTile tile = tiles.next();
+            if(tile.getProperties().containsKey("animation") && tile.getProperties().get("animation", String.class).equals("Fire")){
+                frameTiles.add((StaticTiledMapTile) tile);
+            }
+        }
+        
+        AnimatedTiledMapTile animatedTile = new AnimatedTiledMapTile(1/8f, frameTiles);
+        
+        for(int x = 0; x<width;x++){
+            for(int y = 0; y<height;y++){
+                Cell cell = collisionLayer.getCell(x, y);
+                if((cell !=null) && (cell.getTile()!=null)&&(cell.getTile().getProperties().containsKey("animation"))&& cell.getTile().getProperties().get("animation", String.class).equals("Fire")){
+                    cell.setTile(animatedTile);
+                }
+            }
+        }
     }
     
     public void render(OrthographicCamera camera){

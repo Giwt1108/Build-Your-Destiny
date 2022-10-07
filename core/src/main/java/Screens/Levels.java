@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import Maps.Room;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import Maps.Player;
+import Entities.Player;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -30,10 +30,10 @@ public class Levels implements Screen {
     @Override
     public void show() { 
         camera = new OrthographicCamera(); 
-        room = new Room("Maps/Room2.tmx", new Player(sprite));
-        
+        room = new Room("Maps/Room1.tmx", new Player(sprite));
         
         renderer = room.getRenderer();
+        
     }
 
     @Override

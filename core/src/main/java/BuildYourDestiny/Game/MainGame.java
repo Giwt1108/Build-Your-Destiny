@@ -6,9 +6,6 @@ import com.badlogic.gdx.Game;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class MainGame extends Game {
-	
-    
-    public final String Title = "Game Turorial 1.0.0.0.0";
     
     @Override
     public void create() {

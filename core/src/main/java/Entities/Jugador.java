@@ -29,20 +29,20 @@ public class Jugador extends Entidad {
 
         float currentX = getSprite().getX();
         float currentY = getSprite().getY();
-        if( Gdx.input.isKeyPressed(Input.Keys.A) && currentX >= 0) {
+        if( Gdx.input.isKeyPressed(Input.Keys.A) && !isCollitedX()) {
             System.out.println("Entro A");
             System.out.println("VelX: " +this.getVelocidadX());
             getSprite().setX(currentX - getVelocidadX() * Gdx.graphics.getDeltaTime());
         }
-        if( Gdx.input.isKeyPressed(Input.Keys.D) && currentX <= 800-getSprite().getWidth()) {
+        if( Gdx.input.isKeyPressed(Input.Keys.D) && !isCollitedX()) {
             getSprite().setX(currentX + getVelocidadX() * Gdx.graphics.getDeltaTime());
             System.out.println("Entro D");
         }
-        if( Gdx.input.isKeyPressed(Input.Keys.S) && currentY >= 0){
+        if( Gdx.input.isKeyPressed(Input.Keys.S) && !isCollitedY()){
             getSprite().setY(currentY - getVelocidadY() * Gdx.graphics.getDeltaTime());
             System.out.println("Entro S");
         }
-        if( Gdx.input.isKeyPressed(Input.Keys.W) && currentY <= 480 - getSprite().getHeight()) {
+        if( Gdx.input.isKeyPressed(Input.Keys.W) && !isCollitedY()) {
             getSprite().setY(currentY + getVelocidadY() * Gdx.graphics.getDeltaTime());
             System.out.println("Entro W");
         }

@@ -151,7 +151,7 @@ public class Entidad extends Sprite {
     }
 
     public Entidad(){
-        this(0,0,0,0,0,0,new Sprite(new Texture(Gdx.files.internal("Images/Character5_face1.png"))));
+        this(0,0,0,0,0,0,new Sprite(new Texture(Gdx.files.internal("Images/Player/PersonajePrincipal.png"))));
     }
 
 

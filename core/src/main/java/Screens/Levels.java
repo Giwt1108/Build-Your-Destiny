@@ -118,7 +118,7 @@ public class Levels implements Screen {
         
         player.setHabilidad(habilidadCien);
         player.setSpeed(player.getSpeed()); //le damos una velocidad inicial arbitraria
-        player.setSprite(new Sprite(new Texture(Gdx.files.internal("Images/PersonajePrincipal.png"))));
+        player.setSprite(new Sprite(new Texture(Gdx.files.internal("Images/Player/PersonajePrincipal.png"))));
 
         //Ponemos el rectangulo para nuestro player
         player.getSprite().setX(800 / 2 - 64 / 2);   //Aqui lo estamos centrando horizontalmente

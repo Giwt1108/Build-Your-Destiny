@@ -20,7 +20,7 @@ public class Coleccionable {
 
     //CONSTRUCTOR
     public Coleccionable(float x, float y){
-        this(new Texture(Gdx.files.internal("Images/coin.png")),x,y);
+        this(new Texture(Gdx.files.internal("Images/Coleccionables/coin.png")),x,y);
     }
 
     public Coleccionable(Texture texture , float x, float y){

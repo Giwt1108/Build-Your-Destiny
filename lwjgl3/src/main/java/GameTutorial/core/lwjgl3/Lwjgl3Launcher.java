@@ -1,8 +1,9 @@
 package GameTutorial.core.lwjgl3;
 
+import BuildYourDestiny.Game.MainGame;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import BuildYourDestiny.Game.MainGame;
+
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {

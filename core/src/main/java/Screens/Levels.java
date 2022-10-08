@@ -42,11 +42,7 @@ public class Levels implements Screen {
     @Override
     public void show() { 
         camera = new OrthographicCamera(); 
-<<<<<<< HEAD
-        room = new Room("Maps/Room2.tmx", new Player(sprite));
-        
-        renderer = room.getRenderer(); 
-=======
+
         stage = new Stage();
         
         init();
@@ -57,7 +53,6 @@ public class Levels implements Screen {
         
         room = new Room("Maps/Room2.tmx", player, coleccionables);
         renderer = room.getRenderer();
->>>>>>> Unir
     }
 
     @Override
@@ -68,12 +63,9 @@ public class Levels implements Screen {
         camera.position.set(room.getPlayer().getSprite().getX()+room.getPlayer().getSprite().getWidth()/2,room.getPlayer().getSprite().getY()+room.getPlayer().getSprite().getHeight()/2,0);
         camera.update();
         
-<<<<<<< HEAD
-        room.render(camera);
-=======
+
         room.render(camera,stage,this);
     
->>>>>>> Unir
     }
 
     @Override

@@ -83,24 +83,12 @@ public class Room {
         }
     }
     
-<<<<<<< HEAD
-    public void render(OrthographicCamera camera){
-=======
     public void render(OrthographicCamera camera, Stage stage, Levels screen){
         float oldX, oldY;
->>>>>>> Unir
         renderer.setView(camera);
         renderer.render();
         
         renderer.getBatch().begin();
-<<<<<<< HEAD
-        
-        player.update(Gdx.graphics.getDeltaTime());
-        actualicePlayerX(player.getOldX());
-        actualicePlayerY(player.getOldY());
-        player.draw(renderer.getBatch());
-        renderer.getBatch().end();  
-=======
         oldX = player.getSprite().getX();
         oldY = player.getSprite().getY();
         player.caminar();
@@ -113,8 +101,7 @@ public class Room {
         float delta = Gdx.graphics.getDeltaTime();
         player.perfoAtaqueDis(pressedScreen,delta,screen,stage);
         stage.draw();
-        
->>>>>>> Unir
+     
     }
     
     public void dispose(){

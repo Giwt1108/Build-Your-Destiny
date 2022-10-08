@@ -1,4 +1,6 @@
-package data;
+package Entities;
+
+import com.badlogic.gdx.math.Vector2;
 
 public class Funado extends Estado{
 
@@ -6,9 +8,12 @@ public class Funado extends Estado{
     @Override
     public void performance(Jugador jugador, Enemigo enemigo) {
         int efecto = this.getEfecto();
-        int velocidad = enemigo.getVelocidad();
-        velocidad -= efecto;
-        enemigo.setVelocidad(velocidad);
+        float velocidadX = enemigo.getVelocidadX();
+        float velocidadY = enemigo.getVelocidadY();
+        velocidadX -= efecto;
+        velocidadY -= efecto;
+        enemigo.setVelocidadX(velocidadX);
+        enemigo.setVelocidadY(velocidadY);
     }
 
     public Funado(int efecto){

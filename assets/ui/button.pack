@@ -1,0 +1,12 @@
+
+ui1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+button.Beauty
+  rotate: false
+  xy: 2, 2
+  size: 115, 69
+  orig: 115, 69
+  offset: 0, 0
+  index: -1

@@ -1,4 +1,4 @@
-package data;
+package Entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,7 +17,7 @@ public class Coleccionable {
 
     //CONSTRUCTOR
     public Coleccionable(){
-        this(new Texture(Gdx.files.internal("coin.png")));
+        this(new Texture(Gdx.files.internal("Images/coin.png")));
     }
 
     public Coleccionable(Texture texture ){
@@ -37,7 +37,7 @@ public class Coleccionable {
 
     public boolean recoger(Jugador jugador){
         boolean bandera = false;
-        if(Intersector.overlaps(this.rectangle, jugador.getEntidad())){
+        if(Intersector.overlaps(this.rectangle, jugador.getSprite().getBoundingRectangle())){
             ListaEnlazada<Coleccionable> colecc = jugador.getColeccionables();
             colecc.pushBack(this);
             jugador.setColeccionables(colecc);

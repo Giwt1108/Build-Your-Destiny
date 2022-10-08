@@ -1,4 +1,4 @@
-package data;
+package Entities;
 
 import estructuras.ListaEnlazada;
 

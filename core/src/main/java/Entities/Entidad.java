@@ -1,8 +1,9 @@
-package data;
+package Entities;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -20,6 +21,7 @@ public class Entidad extends Sprite {
     private int ataque;
     private int salud;
     private Sprite sprite;
+    private boolean collitedX,collitedY;
     //private Estado estado;
 
     public void dispose(){
@@ -30,6 +32,22 @@ public class Entidad extends Sprite {
 
     //GETTERS AND SETTERS
 
+
+    public boolean isCollitedX() {
+        return collitedX;
+    }
+
+    public void setCollitedX(boolean collitedX) {
+        this.collitedX = collitedX;
+    }
+
+    public boolean isCollitedY() {
+        return collitedY;
+    }
+
+    public void setCollitedY(boolean collitedY) {
+        this.collitedY = collitedY;
+    }
 
     public Sprite getSprite() {
         return sprite;
@@ -114,12 +132,13 @@ public class Entidad extends Sprite {
         this.velocidadAtaque = velocidadAtaque;
         this.ataque = ataque;
         this.salud = salud;
-        Texture skin= new Texture(Gdx.files.internal("ghost default.jpg")); //Aunque aqui en vez de null deberia ser una skin default
-        this.sprite = new Sprite(skin);
+        this.sprite = sprite;
+        //Aunque aqui en vez de null deberia ser una skin default
+
     }
 
     public Entidad(){
-        this(0,0,0,0,0,0, new Sprite());
+        this(0,0,0,0,0,0, new Sprite(  new Texture(Gdx.files.internal("Images/ghost default.jpg"))));
     }
 
 

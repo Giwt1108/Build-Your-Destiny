@@ -1,4 +1,4 @@
-package data;
+package Entities;
 
 public abstract class Estado {
     private int efecto;

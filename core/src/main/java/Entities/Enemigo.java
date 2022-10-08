@@ -1,4 +1,4 @@
-package data;
+package Entities;
 
 public class Enemigo extends Entidad{
     private Estado estado;

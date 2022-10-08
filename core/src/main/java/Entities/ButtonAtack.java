@@ -1,4 +1,4 @@
-package data;
+package Entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -26,8 +26,8 @@ public class ButtonAtack {
     final private TextureAtlas atlas = new TextureAtlas("ui/button.pack");;
     private Skin skin = new Skin(atlas);;
 
-    final private BitmapFont white = new BitmapFont(Gdx.files.internal("fonts/ButtonAtackWhite.fnt"), false);
-    final private BitmapFont black = new BitmapFont(Gdx.files.internal("fonts/ButtonAtackBlack.fnt"), false);
+    final private BitmapFont white = new BitmapFont(Gdx.files.internal("Font/ButtonAtackWhite.fnt"), false);
+    final private BitmapFont black = new BitmapFont(Gdx.files.internal("Font/ButtonAtackBlack.fnt"), false);
 
     private TextButtonStyle textButtonStyle;
     private TextButton button;
@@ -59,6 +59,7 @@ public class ButtonAtack {
 
     }
 
+
     public void setButton(TextButton button){
         this.button = button;
     }
@@ -75,39 +76,6 @@ public class ButtonAtack {
         return this.label;
     }
 
-    /*
-    public TextButton crearButtonArenga(){
-        int n = MathUtils.random(0, this.arengas.size());
-        String label = this.arengas.getAt(n);
-        TextButton botonArenga =  new TextButton(label,textButtonStyle);
-        botonArenga.pad(5); //Encontrar forma de hacerlo responsive
-        return botonArenga;
-    }
 
-    public TextButton crearButtonEgo(){
-        int n = MathUtils.random(0, this.ego.size());
-        String label = this.ego.getAt(n);
-        TextButton botonEgo = new TextButton(label,textButtonStyle);
-        botonEgo.pad(5);
-        return botonEgo;
-    }*/
-    /*
-    public void llenarArengas(){
-        this.arengas.pushBack("Viva la libertad");
-        this.arengas.pushBack("Viva la justicia");
-        this.arengas.pushBack("Con y para el pueblo");
-        this.arengas.pushBack("Hasta la victoria");
-        this.arengas.pushBack("Colombia unida");
-
-    }
-
-    public void llenarEgo(){
-        this.ego.pushBack("Adminisdtaros con casco");
-        this.arengas.pushBack("Fumanas jaja");
-        this.arengas.pushBack("Vamos a jugar lol");
-        this.arengas.pushBack("No me rayen el viejo");
-        this.arengas.pushBack("Solo ingenieria lokas");
-
-    }*/
 
 }

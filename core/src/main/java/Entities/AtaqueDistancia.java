@@ -25,6 +25,7 @@ public class AtaqueDistancia extends Ataque{
             setActivo(true);
             setButtonActivo(true);
             button = botones.popFront();
+            button.pad(20);
             return button;
         }
         performanceButton(pressedButton,pressedScreen,jugador,delta);

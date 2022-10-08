@@ -9,7 +9,7 @@ public class Ciencias extends Habilidad {
         frases.pushBack("Jaja, fumanas");
         frases.pushBack("Paredes blancas");
         frases.pushBack("No raye el viejo");
-        frases.pushBack("Bañese, mammerto");
+        frases.pushBack("Bañese, mamerto");
         frases.pushBack("lol");
         this.getAtaqueDistancia().setFrases(frases);
     }

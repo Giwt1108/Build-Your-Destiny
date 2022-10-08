@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class Entidad extends Sprite {
     //private int velocidad; //Debería ser 100? deberia ser final?
     private Vector2 velocidad = new Vector2();
+    private float speed = 300;
     //private Vector2 velocidad;
     private int estamina;
     private int alcance;
@@ -64,6 +65,10 @@ public class Entidad extends Sprite {
     public void setVelocidadX(float velocidad) {
         this.velocidad.x = velocidad;
     }
+    
+    public Vector2 getVelocidad(){
+        return velocidad;
+    }
 
     public float getVelocidadY(){
         return this.velocidad.y;
@@ -71,6 +76,14 @@ public class Entidad extends Sprite {
 
     public void setVelocidadY(float velocidad){
         this.velocidad.y = velocidad;
+    }
+    
+    public float getSpeed(){
+        return speed;
+    }
+    
+    public void setSpeed(float newSpeed){
+        speed = newSpeed;
     }
 
     public int getEstamina() {
@@ -138,7 +151,7 @@ public class Entidad extends Sprite {
     }
 
     public Entidad(){
-        this(0,0,0,0,0,0, new Sprite(  new Texture(Gdx.files.internal("Images/ghost default.jpg"))));
+        this(0,0,0,0,0,0,new Sprite(new Texture(Gdx.files.internal("Images/Character5_face1.png"))));
     }
 
 

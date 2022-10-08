@@ -2,9 +2,11 @@ package Entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import estructuras.DoubleLinkedList;
+import estructuras.DoubleNode;
 
 import estructuras.ListaEnlazada;
 
@@ -13,26 +15,27 @@ public class Coleccionable {
     private Texture texture;
     private Rectangle rectangle;
     private boolean visible;
+    private DoubleNode<Coleccionable> node;
 
 
     //CONSTRUCTOR
-    public Coleccionable(){
-        this(new Texture(Gdx.files.internal("Images/coin.png")));
+    public Coleccionable(float x, float y){
+        this(new Texture(Gdx.files.internal("Images/coin.png")),x,y);
     }
 
-    public Coleccionable(Texture texture ){
+    public Coleccionable(Texture texture , float x, float y){
         this.rectangle = new Rectangle();
         this.texture = texture;
         this.visible = false;
-        this.rectangle.setX(20);
-        this.rectangle.setY(20);
+        this.rectangle.setX(x);
+        this.rectangle.setY(y);
         //this.rectangle.setX(MathUtils.random(0,Gdx.graphics.getWidth())); //No funciona con los random
         //this.rectangle.setY(MathUtils.random(0,Gdx.graphics.getHeight()));
     }
 
     ///METODOS
     public void dispose(){
-        this.texture.dispose();;
+        this.texture.dispose();
     }
 
     public boolean recoger(Jugador jugador){
@@ -47,6 +50,17 @@ public class Coleccionable {
         }
         return bandera;
         //System.out.println("Se ejecuta");
+    }
+    
+    public DoubleNode draw(Batch batch, Jugador jugador){
+        //batch.draw(coleccionable.getTexture(), Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        batch.draw(this.getTexture(), this.getRectangle().getX(),this.getRectangle().getY() );
+        if(recoger(jugador)){
+            return node;
+        }else{
+            return null;
+        }
+            
     }
 
 
@@ -75,5 +89,9 @@ public class Coleccionable {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+    
+    public void setNode(DoubleNode<Coleccionable> newNode){
+        node = newNode;
     }
 }

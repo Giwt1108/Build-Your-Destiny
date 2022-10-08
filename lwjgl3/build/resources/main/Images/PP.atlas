@@ -1,0 +1,62 @@
+
+PP.png
+size: 122, 34
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+PP-Caminando2
+  rotate: false
+  xy: 26, 3
+  size: 22, 29
+  orig: 32, 32
+  offset: 6, 1
+  index: -1
+PP-Caminando4
+  rotate: false
+  xy: 50, 3
+  size: 22, 29
+  orig: 32, 32
+  offset: 6, 1
+  index: -1
+PP-Descanso2
+  rotate: false
+  xy: 98, 3
+  size: 22, 29
+  orig: 32, 32
+  offset: 6, 1
+  index: -1
+PP-Descanso3
+  rotate: false
+  xy: 74, 3
+  size: 22, 29
+  orig: 32, 32
+  offset: 6, 1
+  index: -1
+PP-Descanso4
+  rotate: false
+  xy: 2, 2
+  size: 22, 30
+  orig: 32, 32
+  offset: 6, 1
+  index: -1
+PP-Caminando1
+  rotate: false
+  xy: 2, 2
+  size: 22, 30
+  orig: 32, 32
+  offset: 6, 1
+  index: -1
+PP-Caminando3
+  rotate: false
+  xy: 2, 2
+  size: 22, 30
+  orig: 32, 32
+  offset: 6, 1
+  index: -1
+PP-Descanso1
+  rotate: false
+  xy: 2, 2
+  size: 22, 30
+  orig: 32, 32
+  offset: 6, 1
+  index: -1

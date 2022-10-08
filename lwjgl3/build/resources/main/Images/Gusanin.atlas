@@ -1,0 +1,34 @@
+
+Gusanin.png
+size: 89, 23
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Gusano-Caminando1
+  rotate: false
+  xy: 2, 2
+  size: 27, 19
+  orig: 32, 32
+  offset: 1, 5
+  index: -1
+Gusano-Caminando4
+  rotate: false
+  xy: 2, 2
+  size: 27, 19
+  orig: 32, 32
+  offset: 1, 5
+  index: -1
+Gusano-Caminando2
+  rotate: false
+  xy: 60, 2
+  size: 27, 19
+  orig: 32, 32
+  offset: 1, 5
+  index: -1
+Gusano-Caminando3
+  rotate: false
+  xy: 31, 2
+  size: 27, 19
+  orig: 32, 32
+  offset: 1, 5
+  index: -1

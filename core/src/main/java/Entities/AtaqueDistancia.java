@@ -25,7 +25,7 @@ public class AtaqueDistancia extends Ataque{
             setActivo(true);
             setButtonActivo(true);
             button = botones.popFront();
-            button.pad(20);
+            
             return button;
         }
         performanceButton(pressedButton,pressedScreen,jugador,delta);
@@ -96,6 +96,7 @@ public class AtaqueDistancia extends Ataque{
         int posY = MathUtils.random(0, Gdx.graphics.getHeight() - heightButton);
         button.setX(posX);
         button.setY(posY);
+        button.pad(20);
         return button;
     }
 

@@ -95,7 +95,8 @@ public class Room {
         actualicePlayerX(oldX);
         actualicePlayerY(oldY);
         DrawColeccionables();
-        renderer.getBatch().draw(player.getSprite().getTexture(),player.getSprite().getX(), player.getSprite().getY());
+        player.animate(renderer.getBatch());
+        player.addStateTime(Gdx.graphics.getDeltaTime());
         renderer.getBatch().end();
         boolean pressedScreen = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
         float delta = Gdx.graphics.getDeltaTime();

@@ -155,15 +155,11 @@ public class DoubleLinkedList<T> {
     public void popNode(DoubleNode node){
         if(node.getPrev()!=null){
             node.getPrev().setNext(node.getNext());
-        }else{
-            head.setNext(node.getNext());
-        }
+        }        
         if(node.getNext()!=null){
             node.getNext().setPrev(node.getPrev());
-        }else{
-            tail.setPrev(node.getPrev());
         }
-        if(node == head){
+        if(node.getNext()==null && node.getPrev()==null){
             head = null;
             tail = null;
         }

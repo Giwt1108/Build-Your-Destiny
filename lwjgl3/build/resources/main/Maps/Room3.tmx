@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="mapa1" tilewidth="32" tileheight="32" tilecount="60" columns="10">
+  <image source="mapa1.jpg" trans="000000" width="320" height="192"/>
+  <tile id="0">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="animation" value="FireUp"/>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="animation" value="FireUp"/>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="17">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="animation" value="FireDown"/>
+   </properties>
+  </tile>
+  <tile id="19">
+   <properties>
+    <property name="animation" value="FireDown"/>
+   </properties>
+  </tile>
+  <tile id="20">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="27">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="28">
+   <properties>
+    <property name="animation" value="FireUp"/>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="29">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="30">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="37">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="38">
+   <properties>
+    <property name="animation" value="FireDown"/>
+   </properties>
+  </tile>
+  <tile id="40">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="41">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="42">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="43">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="46">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="47">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="48">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="49">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer id="1" name="Capa de patrones 1" width="16" height="16">
+  <data encoding="csv">
+1,2,9,4,9,7,9,7,7,9,7,9,4,9,3,1,
+11,12,19,14,19,17,19,17,17,19,17,19,14,19,13,11,
+21,22,23,24,25,26,27,22,23,24,25,26,27,22,23,21,
+31,32,33,34,35,36,37,32,33,34,35,36,37,32,33,31,
+1,22,23,24,25,26,27,22,23,24,25,26,27,22,23,1,
+11,32,33,34,35,36,37,32,33,34,35,36,37,32,33,11,
+21,22,23,24,25,26,27,22,23,24,25,26,27,22,23,21,
+31,32,33,34,35,36,37,32,33,34,35,36,37,32,33,31,
+1,22,23,24,25,26,27,22,23,24,25,26,27,22,23,1,
+11,32,33,34,35,36,37,32,33,34,35,36,37,32,33,11,
+21,22,23,24,25,26,27,22,23,24,25,26,27,22,23,21,
+31,32,33,34,35,36,37,32,33,34,35,36,37,32,33,31,
+1,22,23,24,25,26,27,22,23,24,25,26,27,22,23,1,
+11,32,33,34,35,36,37,32,33,34,35,36,37,32,33,11,
+41,42,43,44,41,42,43,44,41,42,43,44,41,42,43,44,
+51,52,53,54,51,52,53,54,51,52,53,54,51,52,53,54
+</data>
+ </layer>
+</map>

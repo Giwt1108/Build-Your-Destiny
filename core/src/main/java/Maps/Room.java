@@ -61,23 +61,32 @@ public class Room {
     }
     
     private void initAnimation(){
-        Array<StaticTiledMapTile> frameTiles = new Array<StaticTiledMapTile>(3);
+        Array<StaticTiledMapTile> frameTilesUp = new Array<StaticTiledMapTile>(3);
+        Array<StaticTiledMapTile> frameTilesDown = new Array<StaticTiledMapTile>(3);
         
-        Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("Room").iterator();
+        Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("mapa1").iterator();
         while(tiles.hasNext()){
             TiledMapTile tile = tiles.next();
-            if(tile.getProperties().containsKey("animation") && tile.getProperties().get("animation", String.class).equals("Fire")){
-                frameTiles.add((StaticTiledMapTile) tile);
+            boolean containsAnimation = tile.getProperties().containsKey("animation");
+            String value = tile.getProperties().get("animation", String.class);
+            if(containsAnimation && value.equals("FireUp")){
+                frameTilesUp.add((StaticTiledMapTile) tile);
+            }else if(containsAnimation && value.equals("FireDown")){
+                frameTilesDown.add((StaticTiledMapTile) tile);
             }
         }
         
-        AnimatedTiledMapTile animatedTile = new AnimatedTiledMapTile(1/8f, frameTiles);
+        AnimatedTiledMapTile animatedTileUp = new AnimatedTiledMapTile(1/8f, frameTilesUp);
+        AnimatedTiledMapTile animatedTileDown = new AnimatedTiledMapTile(1/8f, frameTilesDown);
         
         for(int x = 0; x<width;x++){
             for(int y = 0; y<height;y++){
                 Cell cell = collisionLayer.getCell(x, y);
-                if((cell !=null) && (cell.getTile()!=null)&&(cell.getTile().getProperties().containsKey("animation"))&& cell.getTile().getProperties().get("animation", String.class).equals("Fire")){
-                    cell.setTile(animatedTile);
+                if((cell !=null) && (cell.getTile()!=null)&&(cell.getTile().getProperties().containsKey("animation"))&& cell.getTile().getProperties().get("animation", String.class).equals("FireUp")){
+                    cell.setTile(animatedTileUp);
+                }
+                if((cell !=null) && (cell.getTile()!=null)&&(cell.getTile().getProperties().containsKey("animation"))&& cell.getTile().getProperties().get("animation", String.class).equals("FireDown")){
+                    cell.setTile(animatedTileDown);
                 }
             }
         }
@@ -89,17 +98,24 @@ public class Room {
         renderer.render();
         
         renderer.getBatch().begin();
+        
         oldX = player.getSprite().getX();
         oldY = player.getSprite().getY();
         player.caminar();
         actualicePlayerX(oldX);
         actualicePlayerY(oldY);
+        
         DrawColeccionables();
-        renderer.getBatch().draw(player.getSprite().getTexture(),player.getSprite().getX(), player.getSprite().getY());
+        
+        player.animate(renderer.getBatch());
+        player.addStateTime(Gdx.graphics.getDeltaTime());
+        
         renderer.getBatch().end();
+        
         boolean pressedScreen = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
         float delta = Gdx.graphics.getDeltaTime();
         player.perfoAtaqueDis(pressedScreen,delta,screen,stage);
+        
         stage.draw();
      
     }

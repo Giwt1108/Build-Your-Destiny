@@ -5,10 +5,14 @@ import Screens.Levels;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Array;
 
 import estructuras.ListaEnlazada;
 
@@ -17,6 +21,10 @@ public class Jugador extends Entidad implements InputProcessor{
     private ListaEnlazada<Coleccionable> coleccionables; //Aqui es una estructura de coleccionables
     private Habilidad habilidad; //Aqui es un objeto Habilidad
     private int misiones; //Aqui es una estructura de misiones
+    private TextureAtlas atlas;
+    private Animation<TextureRegion> animationWalk,animationRest;
+    private float stateTime;
+    
 
     public void draw(Batch spriteBatch) {
         super.draw(spriteBatch);
@@ -54,6 +62,24 @@ public class Jugador extends Entidad implements InputProcessor{
         }
     }
     
+    public void animate(Batch batch){
+        if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedX()){
+            batch.draw(animationRest.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
+        }else{
+            batch.draw(animationWalk.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
+        }
+    }
+    
+    private void startAnimation(){
+        atlas = new TextureAtlas("Images/Player/PPCaminando/PPWalk.atlas");
+        Array<TextureAtlas.AtlasRegion>  walk = atlas.findRegions("PPCaminando");
+        animationWalk = new Animation(0.15f,walk, Animation.PlayMode.LOOP);
+        atlas = new TextureAtlas("Images/Player/PPDescanso/PPRest.atlas");
+        Array<TextureAtlas.AtlasRegion>  rest = atlas.findRegions("PPDescanso");
+        animationRest = new Animation(0.15f,rest, Animation.PlayMode.LOOP);
+        stateTime=0;
+    }
+    
     public void mostrarBoton(Levels screen,TextButton button,Stage stage){
         screen.setButton(button);
         stage.addActor(screen.getButton());
@@ -85,14 +111,17 @@ public class Jugador extends Entidad implements InputProcessor{
     public void setMisiones(int misiones) {
         this.misiones = misiones;
     }
-
-
+    public void addStateTime(float delta){
+        stateTime += delta;
+    }
+    
     //HAY QUE CORREGIR LOS CONSTRUCTORES PONIENDO EL TIPO DE DATO CORRECTO
     public Jugador(ListaEnlazada<Coleccionable> coleccionables, int misiones, int velocidad, int estamina, int alcance, int suerte, int velocidadAtaque, int ataque, int salud, Habilidad habilidad) {
         super(estamina, alcance, suerte, velocidadAtaque, ataque, salud, new Sprite());
         this.coleccionables = coleccionables;
         this.habilidad = habilidad;
-        this.misiones = misiones;
+        this.misiones = misiones;  
+        startAnimation();
     }
 
     public Jugador(ListaEnlazada<Coleccionable> coleccionables, int misiones, Habilidad habilidad) {
@@ -100,6 +129,7 @@ public class Jugador extends Entidad implements InputProcessor{
         this.coleccionables = coleccionables;
         this.habilidad = habilidad;
         this.misiones = misiones;
+        startAnimation();
     }
 
 
@@ -109,6 +139,7 @@ public class Jugador extends Entidad implements InputProcessor{
         this.coleccionables = new ListaEnlazada<Coleccionable>(); //NO HACERLO NULO
         this.habilidad = new Humanas(); //NO HACERLO NULO
         //this.misiones = new Estructura(); //NO HACERLO NULO
+        startAnimation();
     }
 
         @Override

@@ -1,5 +1,6 @@
 package Entities;
 
+import Entities.Enemies.Enemigo;
 import com.badlogic.gdx.math.Vector2;
 
 public class Funado extends Estado{

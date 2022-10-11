@@ -1,0 +1,83 @@
+
+Croc.png
+size: 258, 98
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+enemiCocodrile
+  rotate: false
+  xy: 131, 51
+  size: 41, 45
+  orig: 64, 64
+  offset: 16, 17
+  index: -1
+enemiCocodrileMovAtq
+  rotate: false
+  xy: 47, 2
+  size: 40, 46
+  orig: 64, 64
+  offset: 17, 17
+  index: -1
+enemiCocodrileMovAtq
+  rotate: false
+  xy: 2, 50
+  size: 43, 46
+  orig: 64, 64
+  offset: 17, 17
+  index: -1
+enemiCocodrileMovAtq
+  rotate: false
+  xy: 2, 2
+  size: 43, 46
+  orig: 64, 64
+  offset: 17, 17
+  index: -1
+enemiCocodrileMovCam
+  rotate: false
+  xy: 89, 2
+  size: 40, 46
+  orig: 64, 64
+  offset: 17, 17
+  index: -1
+enemiCocodrileMovCam
+  rotate: false
+  xy: 131, 4
+  size: 40, 45
+  orig: 64, 64
+  offset: 17, 17
+  index: -1
+enemiCocodrileMovCam
+  rotate: false
+  xy: 216, 51
+  size: 40, 45
+  orig: 64, 64
+  offset: 17, 17
+  index: -1
+enemiCocodrileMovD
+  rotate: false
+  xy: 89, 50
+  size: 40, 46
+  orig: 64, 64
+  offset: 17, 17
+  index: -1
+enemiCocodrileMovD
+  rotate: false
+  xy: 47, 50
+  size: 40, 46
+  orig: 64, 64
+  offset: 17, 17
+  index: -1
+enemiCocodrileMovD
+  rotate: false
+  xy: 173, 4
+  size: 40, 45
+  orig: 64, 64
+  offset: 17, 17
+  index: -1
+enemiCocodrileMovD
+  rotate: false
+  xy: 174, 51
+  size: 40, 45
+  orig: 64, 64
+  offset: 17, 17
+  index: -1

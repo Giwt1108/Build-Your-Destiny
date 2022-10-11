@@ -24,6 +24,12 @@ public class Jugador extends Entidad implements InputProcessor{
     private TextureAtlas atlas;
     private Animation<TextureRegion> animationWalk,animationRest;
     private float stateTime;
+<<<<<<< HEAD
+=======
+    private int multiplicador=1;
+    private boolean running;
+    public boolean moridoBienMorido=false;
+>>>>>>> Juan
     
 
     public void draw(Batch spriteBatch) {
@@ -114,6 +120,23 @@ public class Jugador extends Entidad implements InputProcessor{
     public void addStateTime(float delta){
         stateTime += delta;
     }
+<<<<<<< HEAD
+=======
+    public void underAttack(boolean auch,int amount){
+        if(auch==true){
+            if(this.salud>0){
+                this.salud=salud-amount;
+                System.out.println(salud);
+            }
+            else{
+                this.dispose();
+                this.moridoBienMorido=true;
+            }
+        }
+        else{
+        }
+    }
+>>>>>>> Juan
     
     //HAY QUE CORREGIR LOS CONSTRUCTORES PONIENDO EL TIPO DE DATO CORRECTO
     public Jugador(ListaEnlazada<Coleccionable> coleccionables, int misiones, int velocidad, int estamina, int alcance, int suerte, int velocidadAtaque, int ataque, int salud, Habilidad habilidad) {
@@ -145,24 +168,28 @@ public class Jugador extends Entidad implements InputProcessor{
         @Override
     public boolean keyDown(int keycode) {
         switch(keycode){
+            case Input.Keys.SHIFT_LEFT:
+                this.running=true;
+                this.multiplicador=2;
+                break;
             case Input.Keys.W:
-                if(!isCollitedY()){
-                    setVelocidadY(getSpeed());
+               if (!isCollitedY()){
+                    setVelocidadY(getSpeed()*multiplicador);
                 }
                 break;
             case Input.Keys.A:
                 if(!isCollitedX()){
-                    setVelocidadX(-getSpeed());
+                    setVelocidadX(-getSpeed()*multiplicador);
                 }
                 break;
             case Input.Keys.S:
                 if(!isCollitedY()){
-                    setVelocidadY(-getSpeed());
+                    setVelocidadY(-getSpeed()*multiplicador);
                 }
                 break;
             case Input.Keys.D:
                 if(!isCollitedX()){
-                    setVelocidadX(getSpeed());
+                    setVelocidadX(getSpeed()*multiplicador);
                 }
                 break;
         }        
@@ -172,11 +199,17 @@ public class Jugador extends Entidad implements InputProcessor{
     @Override
     public boolean keyUp(int keycode) {
         switch(keycode){
+            case Input.Keys.SHIFT_LEFT:
+                this.running=true;
+                this.multiplicador=1;
+                break;
             case Input.Keys.W:
+                setVelocidadY(0);
             case Input.Keys.S:
                 setVelocidadY(0);
                 break;
             case Input.Keys.A:
+                setVelocidadX(0);
             case Input.Keys.D:
                 setVelocidadX(0);
         }        

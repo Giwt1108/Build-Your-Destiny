@@ -1,5 +1,6 @@
 package Entities;
 
+import Entities.Enemies.Enemigo;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import estructuras.ListaEnlazada;

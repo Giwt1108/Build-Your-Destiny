@@ -63,6 +63,8 @@ public class Room {
     private void initAnimation(){
         Array<StaticTiledMapTile> frameTilesUp = new Array<StaticTiledMapTile>(3);
         Array<StaticTiledMapTile> frameTilesDown = new Array<StaticTiledMapTile>(3);
+        Array<StaticTiledMapTile> frameTilesTorchDown = new Array<StaticTiledMapTile>(3);
+
         
         Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("mapa1").iterator();
         while(tiles.hasNext()){
@@ -73,20 +75,24 @@ public class Room {
                 frameTilesUp.add((StaticTiledMapTile) tile);
             }else if(containsAnimation && value.equals("FireDown")){
                 frameTilesDown.add((StaticTiledMapTile) tile);
+            }else if(containsAnimation && value.equals("TorchDown")){
+                frameTilesTorchDown.add((StaticTiledMapTile) tile);
             }
         }
         
-        AnimatedTiledMapTile animatedTileUp = new AnimatedTiledMapTile(1/8f, frameTilesUp);
-        AnimatedTiledMapTile animatedTileDown = new AnimatedTiledMapTile(1/8f, frameTilesDown);
+        AnimatedTiledMapTile animatedTileUp = new AnimatedTiledMapTile(1/6f, frameTilesUp);
+        AnimatedTiledMapTile animatedTileDown = new AnimatedTiledMapTile(1/6f, frameTilesDown);
+        AnimatedTiledMapTile animatedTileTorchDown = new AnimatedTiledMapTile(1/6f, frameTilesTorchDown);
         
         for(int x = 0; x<width;x++){
             for(int y = 0; y<height;y++){
                 Cell cell = collisionLayer.getCell(x, y);
                 if((cell !=null) && (cell.getTile()!=null)&&(cell.getTile().getProperties().containsKey("animation"))&& cell.getTile().getProperties().get("animation", String.class).equals("FireUp")){
                     cell.setTile(animatedTileUp);
-                }
-                if((cell !=null) && (cell.getTile()!=null)&&(cell.getTile().getProperties().containsKey("animation"))&& cell.getTile().getProperties().get("animation", String.class).equals("FireDown")){
+                }else if((cell !=null) && (cell.getTile()!=null)&&(cell.getTile().getProperties().containsKey("animation"))&& cell.getTile().getProperties().get("animation", String.class).equals("FireDown")){
                     cell.setTile(animatedTileDown);
+                }else if((cell !=null) && (cell.getTile()!=null)&&(cell.getTile().getProperties().containsKey("animation"))&& cell.getTile().getProperties().get("animation", String.class).equals("TorchDown")){
+                    cell.setTile(animatedTileTorchDown);
                 }
             }
         }

@@ -51,7 +51,7 @@ public class Levels implements Screen {
         inputMultiplexer.addProcessor(player);
         Gdx.input.setInputProcessor(inputMultiplexer);
         
-        room = new Room("Maps/Room3.tmx", player, coleccionables);
+        room = new Room("Maps/Room1.tmx", player, coleccionables);
         renderer = room.getRenderer();
     }
 

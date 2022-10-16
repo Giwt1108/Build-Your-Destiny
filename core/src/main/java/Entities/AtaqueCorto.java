@@ -1,6 +1,7 @@
 package Entities;
 
 import Entities.Enemies.Enemigo;
+import Entities.Enemies.LinkedCroc;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import estructuras.ListaEnlazada;
@@ -16,15 +17,29 @@ public class AtaqueCorto extends Ataque{
 
 
     @Override
-    public void ataqueCorto(Jugador jugador, Enemigo enemigo) {
-        if(acertar(jugador, enemigo)){
+    public void ataqueCorto(Jugador jugador, Enemigo enemigo){
+    }
+    public void ataqueCorto(Jugador jugador, LinkedCroc enemigo) {
+        float X=jugador.getSprite().getX();
+        float Y= jugador.getSprite().getY();
+         if(X<0){X=X*(-1);}
+        if(Y<0){Y=Y*(-1);}
+        double distance;
+        double x=(double)X-enemigo.getSprite().getX();
+        double y=(double)Y-enemigo.getSprite().getY();
+        distance=(x*x)+(y*y);
+        distance=Math.sqrt(distance);
+        if(distance<20&& jugador.isAttacking()){
             //SI acierta el golpe le baja vida al enemigo y le da un estado
-            int salud = enemigo.getSalud();
-            salud -= 1;
+            float salud = enemigo.getSalud();
+            salud -= 10;
+            if(salud<=0){
+                enemigo.kill();
+            }
             enemigo.setSalud(salud);
             Estado estado = getEstado(); //Tomamos el estado que este ataque genera
-            enemigo.setEstado(estado); //le damos este estado al enemigo
-            estado.performance(jugador, enemigo); //ejecutamos lo que hace el estado
+            //enemigo.setEstado(estado); //le damos este estado al enemigo
+            //estado.performance(jugador, enemigo); //ejecutamos lo que hace el estado
         }
     }
 

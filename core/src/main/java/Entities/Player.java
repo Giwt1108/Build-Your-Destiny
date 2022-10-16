@@ -95,22 +95,22 @@ public class Player extends Sprite implements InputProcessor{
                 if(!collitedY){
                     velocity.y = speed;
                 }
-                break;
+            //    break;
             case Keys.A:
                 if(!collitedX){
                     velocity.x = -speed;
                 }
-                break;
+                
             case Keys.S:
                 if(!collitedY){
                     velocity.y = -speed;
                 }
-                break;
+                
             case Keys.D:
                 if(!collitedX){
                     velocity.x = speed;
                 }
-                break;
+                
         }
                 
         return true;
@@ -120,13 +120,13 @@ public class Player extends Sprite implements InputProcessor{
     public boolean keyUp(int keycode) {
         switch(keycode){
             case Keys.W:
+            
             case Keys.S:
-                velocity.y= 0;
-                break;
+     
             case Keys.A:
+
             case Keys.D:
-                velocity.x= 0;
-                break;
+ 
         }
         return true;
     }

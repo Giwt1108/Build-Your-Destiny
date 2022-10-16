@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 
 import estructuras.ListaEnlazada;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Jugador extends Entidad implements InputProcessor{
 
@@ -22,15 +24,15 @@ public class Jugador extends Entidad implements InputProcessor{
     private Habilidad habilidad; //Aqui es un objeto Habilidad
     private int misiones; //Aqui es una estructura de misiones
     private TextureAtlas atlas;
-    private Animation<TextureRegion> animationWalk,animationRest;
+    private Animation<TextureRegion> animationWalk,animationRest,animationAttack;
     private float stateTime;
-<<<<<<< HEAD
-=======
+    private boolean attacking=false;
+    private boolean canAttack=true; 
+   //El Multiplicador nos va a permitir saber por cuanto queremos cambiar ciertos aspectos de nuestro jugador
     private int multiplicador=1;
-    private boolean running;
+    private boolean dashing;
     public boolean moridoBienMorido=false;
->>>>>>> Juan
-    
+
 
     public void draw(Batch spriteBatch) {
         super.draw(spriteBatch);
@@ -69,7 +71,10 @@ public class Jugador extends Entidad implements InputProcessor{
     }
     
     public void animate(Batch batch){
-        if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedX()){
+        if(this.attacking==true){
+            batch.draw(animationAttack.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
+        }
+        else if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedX()){
             batch.draw(animationRest.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
         }else{
             batch.draw(animationWalk.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
@@ -83,6 +88,9 @@ public class Jugador extends Entidad implements InputProcessor{
         atlas = new TextureAtlas("Images/Player/PPDescanso/PPRest.atlas");
         Array<TextureAtlas.AtlasRegion>  rest = atlas.findRegions("PPDescanso");
         animationRest = new Animation(0.15f,rest, Animation.PlayMode.LOOP);
+         atlas = new TextureAtlas("Images/Player/PPMovAtq/PPAttack.atlas");
+        Array<TextureAtlas.AtlasRegion>  attack = atlas.findRegions("PPAttack");
+        animationAttack = new Animation(0.15f,attack, Animation.PlayMode.LOOP);
         stateTime=0;
     }
     
@@ -120,13 +128,11 @@ public class Jugador extends Entidad implements InputProcessor{
     public void addStateTime(float delta){
         stateTime += delta;
     }
-<<<<<<< HEAD
-=======
-    public void underAttack(boolean auch,int amount){
+    //Esta funcion nos deja saber si el jugador esta siendo atacado o no
+    public void underAttack(boolean auch,float amount){
         if(auch==true){
             if(this.salud>0){
                 this.salud=salud-amount;
-                System.out.println(salud);
             }
             else{
                 this.dispose();
@@ -136,7 +142,8 @@ public class Jugador extends Entidad implements InputProcessor{
         else{
         }
     }
->>>>>>> Juan
+    public boolean isAttacking(){
+        return this.attacking;}
     
     //HAY QUE CORREGIR LOS CONSTRUCTORES PONIENDO EL TIPO DE DATO CORRECTO
     public Jugador(ListaEnlazada<Coleccionable> coleccionables, int misiones, int velocidad, int estamina, int alcance, int suerte, int velocidadAtaque, int ataque, int salud, Habilidad habilidad) {
@@ -168,9 +175,14 @@ public class Jugador extends Entidad implements InputProcessor{
         @Override
     public boolean keyDown(int keycode) {
         switch(keycode){
+            //Shift para dar un Dash que se implementara mas tarde xd
             case Input.Keys.SHIFT_LEFT:
-                this.running=true;
+                this.dashing=true;
                 this.multiplicador=2;
+                break;
+            case Input.Keys.E:
+                this.attacking=true;
+                System.out.println("Atacando");
                 break;
             case Input.Keys.W:
                if (!isCollitedY()){
@@ -200,16 +212,21 @@ public class Jugador extends Entidad implements InputProcessor{
     public boolean keyUp(int keycode) {
         switch(keycode){
             case Input.Keys.SHIFT_LEFT:
-                this.running=true;
+                this.dashing=true;
                 this.multiplicador=1;
+                break;
+            case Input.Keys.E:
+                this.attacking=false;
                 break;
             case Input.Keys.W:
                 setVelocidadY(0);
+                break;
             case Input.Keys.S:
                 setVelocidadY(0);
                 break;
             case Input.Keys.A:
                 setVelocidadX(0);
+                break;
             case Input.Keys.D:
                 setVelocidadX(0);
         }        

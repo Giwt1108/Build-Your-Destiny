@@ -4,6 +4,7 @@
  */
 package Maps;
 
+import Entities.AtaqueCorto;
 import Entities.Coleccionable;
 import Entities.Enemies.LinkedCroc;
 import Entities.Jugador;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -40,11 +42,20 @@ public class Room {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private Music music= Gdx.audio.newMusic(Gdx.files.internal("Music/GameloopOne.mp3"));
-
     private TiledMapTileLayer collisionLayer;
     private Jugador player;
+    //Texturas de la interfaz
+    private Texture blank= new Texture(Gdx.files.internal("Images/blank.png"));
+    private Texture playerLife=new Texture(Gdx.files.internal("Images/green.png"));
+    private Texture playerBackPack=new Texture(Gdx.files.internal("Images/backpack.png"));
+    private Texture optionsIcon=new Texture(Gdx.files.internal("Images/options.png"));
     private LinkedCroc [] Crocos= new LinkedCroc[20];
+    //cooldowns y pausa
     private long CoolBaby= System.currentTimeMillis()+15000;
+    private long CoolDownAttack=System.currentTimeMillis()+5000;
+    private long CoolDownDash=System.currentTimeMillis()+5000;
+    private boolean pause=false;
+    private boolean fullScreen=true;
     private int amountOfCrocos=0;
     private DoubleLinkedList<Coleccionable> coleccionables;
     
@@ -61,17 +72,19 @@ public class Room {
         width = collisionLayer.getWidth();
         height = collisionLayer.getHeight();
         this.player = player;
+        //Iniciamos el primer cococdrilo
         this.Crocos[0]= enemy;
         amountOfCrocos++;
         Crocos[0].sprite.setX(player.sprite.getX()+10);
         Crocos[0].sprite.setY(player.sprite.getY()+10);
         scaleX = ((float) collisionLayer.getWidth())/collisionLayer.getTileWidth();
         scaleY = ((float) collisionLayer.getHeight())/collisionLayer.getTileHeight();
+        //Configuramos la musica
         music.setLooping(true);
         music.setVolume(0.5f);
         music.play();
         initAnimation();
-        
+       
         this.coleccionables = coleccionables;
     }
     
@@ -81,7 +94,7 @@ public class Room {
         Array<StaticTiledMapTile> frameTilesTorchDown = new Array<StaticTiledMapTile>(3);
 
         
-        Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("mapa1").iterator();
+        Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("Room").iterator();
         while(tiles.hasNext()){
             TiledMapTile tile = tiles.next();
             boolean containsAnimation = tile.getProperties().containsKey("animation");
@@ -114,57 +127,102 @@ public class Room {
     }
     
     public void render(OrthographicCamera camera, Stage stage, Levels screen){
-        float oldX, oldY;
-        
-        renderer.setView(camera);
-        renderer.render();
-        renderer.getBatch().begin();
-        
-        oldX = player.getSprite().getX();
-        oldY = player.getSprite().getY();
-        player.caminar();
-        actualicePlayerX(oldX);
-        actualicePlayerY(oldY);
-        
-        DrawColeccionables();
-<<<<<<< HEAD
-        
-        player.animate(renderer.getBatch());
-        player.addStateTime(Gdx.graphics.getDeltaTime());
-        
-=======
-        player.animate(renderer.getBatch());
-        renderCrocks();
-        player.addStateTime(Gdx.graphics.getDeltaTime());
->>>>>>> Juan
-        renderer.getBatch().end();
-        
-        boolean pressedScreen = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
-        float delta = Gdx.graphics.getDeltaTime();
-        player.perfoAtaqueDis(pressedScreen,delta,screen,stage);
-<<<<<<< HEAD
-        
-        stage.draw();
-     
-=======
-        if(player.moridoBienMorido==true){
-            System.out.println("NOOOooooo te moriste");
-            Gdx.app.exit();
+        //Revisamos si el jugador pausa o no y si quiere pantalla completa o no 
+        boolean paused = Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE);
+        boolean full = Gdx.input.isKeyJustPressed(Input.Keys.F1);
+        if(this.fullScreen==true && full==true){
+            Gdx.graphics.setWindowedMode(960, 720);
+            Gdx.graphics.setResizable(true);
+            this.fullScreen=false;
         }
+        else if(this.fullScreen==false && full==true){
+            Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+            this.fullScreen=true;
+        }
+        if(this.pause==true && paused==true){
+                this.pause=false;
+        }
+        else if(this.pause==false && paused==true){
+            this.pause=true;
+        }
+        if(this.pause==false){
+            float oldX, oldY;
+            renderer.getBatch().setColor(Color.WHITE);
+            renderer.setView(camera);
+            renderer.render();
+            renderer.getBatch().begin();
+             //Renderizamos a todos los cocodrilos
+            renderCrocks();
+           //Render de interfaz
+            if(this.fullScreen==true){
+                renderer.getBatch().draw(blank, player.sprite.getX()-502, player.sprite.getY()+400,410,20);
+                renderer.getBatch().draw(playerLife, player.sprite.getX()-500, player.sprite.getY()+405,(int)player.getSalud()*4,10);
+                renderer.getBatch().draw(playerBackPack, player.sprite.getX()+420, player.sprite.getY()+370,48,48);
+                renderer.getBatch().draw(optionsIcon, player.sprite.getX()+540, player.sprite.getY()+370,48,48);
+            }
+            else{
+                 renderer.getBatch().draw(blank, player.sprite.getX()-302, player.sprite.getY()+247,310,16);
+                 renderer.getBatch().draw(playerLife, player.sprite.getX()-300, player.sprite.getY()+250,(int)player.getSalud()*3,10);
+                 renderer.getBatch().draw(playerBackPack, player.sprite.getX()+255, player.sprite.getY()+230,48,48);
+                 renderer.getBatch().draw(optionsIcon, player.sprite.getX()+320, player.sprite.getY()+230,48,48);
+            }
+            oldX = player.getSprite().getX();
+            oldY = player.getSprite().getY();
+            player.caminar();
+            actualicePlayerX(oldX);
+            actualicePlayerY(oldY);
+            DrawColeccionables();
+            player.animate(renderer.getBatch());
+            player.addStateTime(Gdx.graphics.getDeltaTime()); 
+            renderer.getBatch().end();
+            boolean pressedScreen = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
+            float delta = Gdx.graphics.getDeltaTime();
+            //Comprobamos Estados del Juego
+            player.perfoAtaqueDis(pressedScreen,delta,screen,stage);
+            if(player.moridoBienMorido==true){
+                System.out.println("NOOOooooo te moriste");
+                Gdx.app.exit();
+            }
+        }
+        else{
+            renderer.setView(camera);
+            renderer.getBatch().setColor(Color.GRAY);
+            renderer.render();
+            renderer.getBatch().begin();
+            if(this.fullScreen==true){
+                renderer.getBatch().draw(blank, player.sprite.getX()-502, player.sprite.getY()+400,410,20);
+                renderer.getBatch().draw(playerLife, player.sprite.getX()-500, player.sprite.getY()+405,(int)player.getSalud()*4,10);
+                renderer.getBatch().draw(playerBackPack, player.sprite.getX()+420, player.sprite.getY()+370,48,48);
+                renderer.getBatch().draw(optionsIcon, player.sprite.getX()+540, player.sprite.getY()+370,48,48);
+            }
+            else{
+                 renderer.getBatch().draw(blank, player.sprite.getX()-302, player.sprite.getY()+247,310,16);
+                 renderer.getBatch().draw(playerLife, player.sprite.getX()-300, player.sprite.getY()+250,(int)player.getSalud()*3,10);
+                 renderer.getBatch().draw(playerBackPack, player.sprite.getX()+255, player.sprite.getY()+230,48,48);
+                 renderer.getBatch().draw(optionsIcon, player.sprite.getX()+320, player.sprite.getY()+230,48,48);
+            }
+            DrawColeccionables();
+            renderer.getBatch().end();
+        }
+        
+        
         stage.draw();     
     }
-    
+    //Se renderizan todos los Cocodrilos y en caso de que se haya terminado el cooldown del Cocodrilo padre se crea un nuevo cocodrilo en el primer if
     public void renderCrocks(){
         float oldXE,oldYE;
-        if(Crocos[0].babyExplotion() && this.CoolBaby<System.currentTimeMillis()&& amountOfCrocos<19){
+        if(Crocos[0].babyExplotion() && this.CoolBaby<System.currentTimeMillis()&& amountOfCrocos<19 && Crocos[0].isAlive() ){
              Crocos[amountOfCrocos]= new LinkedCroc();
-             float place= (float) (Math.random()*10+1);
+             float place= (float) (Math.random()*3+1);
              Crocos[amountOfCrocos].sprite.setX(Crocos[0].sprite.getX()+ place);
              Crocos[amountOfCrocos].sprite.setY(Crocos[0].sprite.getY()+ place);
              this.CoolBaby=System.currentTimeMillis()+15000;
              amountOfCrocos++;
             }
         for(int i=0;i<amountOfCrocos;i++){
+            AtaqueCorto atk= new AtaqueCorto(); 
+             atk.ataqueCorto(player, Crocos[i]);
+             if(Crocos[i].isAlive()){
             oldXE = Crocos[i].getSprite().getX();
             oldYE = Crocos[i].getSprite().getY();
             Crocos[i].caminar();
@@ -172,9 +230,12 @@ public class Room {
             actualiceEnemyY(oldYE,Crocos[i]);
             Crocos[i].addStateTime(Gdx.graphics.getDeltaTime());
             Crocos[i].animate(renderer.getBatch());
-            player.underAttack(Crocos[i].playerNear(player.sprite.getX(), player.sprite.getY()),1);
+            //revisa si el cocodrilo en la posicion i esta atacando el jugador y si si le quita daño
+            player.underAttack(Crocos[i].playerNear(player.sprite.getX(), player.sprite.getY()),0.1f);
+            System.out.println("Crocos "+ i+"  Life: "+ Crocos[i].getSalud());
+             }
         }
->>>>>>> Juan
+
     }
     
     public void dispose(){
@@ -241,7 +302,7 @@ public class Room {
             }
         }
     }
-    
+    //Se revisan las colisiones del cocodrilo
     private void actualiceEnemyY(float oldY,LinkedCroc enemy){
         enemy.setCollitedY(false);
         if(oldY!=enemy.getSprite().getY()){

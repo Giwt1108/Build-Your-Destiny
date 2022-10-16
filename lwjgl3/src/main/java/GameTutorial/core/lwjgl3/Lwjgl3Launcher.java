@@ -1,6 +1,7 @@
 package GameTutorial.core.lwjgl3;
 
 import BuildYourDestiny.Game.MainGame;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 

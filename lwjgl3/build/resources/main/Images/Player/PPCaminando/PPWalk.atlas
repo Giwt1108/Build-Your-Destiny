@@ -4,28 +4,28 @@ format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 PPCaminando
-  rotate: false
+  rotate: true
   xy: 1, 1
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: 0
 PPCaminando
-  rotate: false
+  rotate: true
   xy: 1, 1
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: 2
 PPCaminando
-  rotate: false
+  rotate: true
   xy: 51, 1
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: 1
 PPCaminando
-  rotate: false
+  rotate: true
   xy: 101, 1
   size: 48, 48
   orig: 48, 48

@@ -81,7 +81,7 @@ public class Room {
         Array<StaticTiledMapTile> frameTilesTorchDown = new Array<StaticTiledMapTile>(3);
 
         
-        Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("mapa1").iterator();
+        Iterator<TiledMapTile> tiles = map.getTileSets().getTileSet("Room").iterator();
         while(tiles.hasNext()){
             TiledMapTile tile = tiles.next();
             boolean containsAnimation = tile.getProperties().containsKey("animation");
@@ -126,27 +126,21 @@ public class Room {
         actualicePlayerX(oldX);
         actualicePlayerY(oldY);
         
-        DrawColeccionables();
-<<<<<<< HEAD
-        
+        DrawColeccionables();        
         player.animate(renderer.getBatch());
         player.addStateTime(Gdx.graphics.getDeltaTime());
-        
-=======
         player.animate(renderer.getBatch());
+        
         renderCrocks();
+        
         player.addStateTime(Gdx.graphics.getDeltaTime());
->>>>>>> Juan
         renderer.getBatch().end();
         
         boolean pressedScreen = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
         float delta = Gdx.graphics.getDeltaTime();
         player.perfoAtaqueDis(pressedScreen,delta,screen,stage);
-<<<<<<< HEAD
         
         stage.draw();
-     
-=======
         if(player.moridoBienMorido==true){
             System.out.println("NOOOooooo te moriste");
             Gdx.app.exit();
@@ -174,7 +168,6 @@ public class Room {
             Crocos[i].animate(renderer.getBatch());
             player.underAttack(Crocos[i].playerNear(player.sprite.getX(), player.sprite.getY()),1);
         }
->>>>>>> Juan
     }
     
     public void dispose(){

@@ -24,12 +24,9 @@ public class Jugador extends Entidad implements InputProcessor{
     private TextureAtlas atlas;
     private Animation<TextureRegion> animationWalk,animationRest;
     private float stateTime;
-<<<<<<< HEAD
-=======
     private int multiplicador=1;
     private boolean running;
     public boolean moridoBienMorido=false;
->>>>>>> Juan
     
 
     public void draw(Batch spriteBatch) {
@@ -79,10 +76,10 @@ public class Jugador extends Entidad implements InputProcessor{
     private void startAnimation(){
         atlas = new TextureAtlas("Images/Player/PPCaminando/PPWalk.atlas");
         Array<TextureAtlas.AtlasRegion>  walk = atlas.findRegions("PPCaminando");
-        animationWalk = new Animation(0.15f,walk, Animation.PlayMode.LOOP);
+        animationWalk = new Animation(0.25f,walk, Animation.PlayMode.LOOP);
         atlas = new TextureAtlas("Images/Player/PPDescanso/PPRest.atlas");
         Array<TextureAtlas.AtlasRegion>  rest = atlas.findRegions("PPDescanso");
-        animationRest = new Animation(0.15f,rest, Animation.PlayMode.LOOP);
+        animationRest = new Animation(0.25f,rest, Animation.PlayMode.LOOP);
         stateTime=0;
     }
     
@@ -120,8 +117,6 @@ public class Jugador extends Entidad implements InputProcessor{
     public void addStateTime(float delta){
         stateTime += delta;
     }
-<<<<<<< HEAD
-=======
     public void underAttack(boolean auch,int amount){
         if(auch==true){
             if(this.salud>0){
@@ -136,7 +131,6 @@ public class Jugador extends Entidad implements InputProcessor{
         else{
         }
     }
->>>>>>> Juan
     
     //HAY QUE CORREGIR LOS CONSTRUCTORES PONIENDO EL TIPO DE DATO CORRECTO
     public Jugador(ListaEnlazada<Coleccionable> coleccionables, int misiones, int velocidad, int estamina, int alcance, int suerte, int velocidadAtaque, int ataque, int salud, Habilidad habilidad) {

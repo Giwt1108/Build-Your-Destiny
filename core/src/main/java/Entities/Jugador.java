@@ -15,6 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 
 import estructuras.ListaEnlazada;
+import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,12 +29,16 @@ public class Jugador extends Entidad implements InputProcessor{
     private TextureAtlas atlas;
     private Animation<TextureRegion> animationWalk,animationRest,animationAttack;
     private float stateTime;
+    private float CoolDownAttack=0;
+    private float CoolDownDash=0;
     private boolean attacking=false;
+    private boolean dashing=false;
     private boolean canAttack=true; 
+    private boolean canDash=true;
+    public boolean moridoBienMorido=false;
    //El Multiplicador nos va a permitir saber por cuanto queremos cambiar ciertos aspectos de nuestro jugador
     private int multiplicador=1;
-    private boolean dashing;
-    public boolean moridoBienMorido=false;
+   
 
 
     public void draw(Batch spriteBatch) {
@@ -74,7 +81,7 @@ public class Jugador extends Entidad implements InputProcessor{
         if(this.attacking==true){
             batch.draw(animationAttack.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
         }
-        else if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedX()){
+        else if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedY()){
             batch.draw(animationRest.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
         }else{
             batch.draw(animationWalk.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
@@ -145,6 +152,25 @@ public class Jugador extends Entidad implements InputProcessor{
     public boolean isAttacking(){
         return this.attacking;}
     
+    public void attack(){
+
+        if(System.currentTimeMillis()>CoolDownAttack){
+            this.canAttack=true;
+            
+        }
+        if(this.canAttack==true){
+            this.CoolDownAttack=System.currentTimeMillis()+1000;
+            this.attacking=true;
+            this.canAttack=false;
+        }           
+        System.out.println((this.CoolDownAttack+1000)-this.CoolDownAttack);
+    }
+      public void dash(){
+          this.multiplicador=2;
+          this.dashing=true;
+          this.canDash=false;
+    }
+    
     //HAY QUE CORREGIR LOS CONSTRUCTORES PONIENDO EL TIPO DE DATO CORRECTO
     public Jugador(ListaEnlazada<Coleccionable> coleccionables, int misiones, int velocidad, int estamina, int alcance, int suerte, int velocidadAtaque, int ataque, int salud, Habilidad habilidad) {
         super(estamina, alcance, suerte, velocidadAtaque, ataque, salud, new Sprite());
@@ -177,12 +203,10 @@ public class Jugador extends Entidad implements InputProcessor{
         switch(keycode){
             //Shift para dar un Dash que se implementara mas tarde xd
             case Input.Keys.SHIFT_LEFT:
-                this.dashing=true;
-                this.multiplicador=2;
+               dash();
                 break;
             case Input.Keys.E:
-                this.attacking=true;
-                System.out.println("Atacando");
+                attack();
                 break;
             case Input.Keys.W:
                if (!isCollitedY()){
@@ -212,7 +236,7 @@ public class Jugador extends Entidad implements InputProcessor{
     public boolean keyUp(int keycode) {
         switch(keycode){
             case Input.Keys.SHIFT_LEFT:
-                this.dashing=true;
+                this.dashing=false;
                 this.multiplicador=1;
                 break;
             case Input.Keys.E:

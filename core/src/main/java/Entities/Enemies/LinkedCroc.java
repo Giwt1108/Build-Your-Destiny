@@ -62,20 +62,17 @@ public class LinkedCroc extends Enemigo{
             return false;
             }
         else{
+            this.setVelocidadX(0);
+            this.setVelocidadY(0);
             patrol();
             this.isAttacking=false;
             return false;
         }
     }
     public void patrol(){
-        float startX=this.sprite.getX();
-        if(this.sprite.getX()<startX+50 && !collitedX){
-            this.setVelocidadY(0);
-            this.setVelocidadX(this.getSpeed()-50);
-        }
-        else if(this.sprite.getX()>startX-50 && !collitedX){
-            this.setVelocidadY(0);
-            this.setVelocidadX(-this.getSpeed()+50);
+        this.setVelocidadX((float) (Math.random()*10));
+        if(isCollitedX()){
+            this.setVelocidadY(speed+200);
         }
     }
     
@@ -92,7 +89,7 @@ public class LinkedCroc extends Enemigo{
             this.setVelocidadX(0);
             this.setVelocidadX(0);
         }
-        else if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedX()){
+        else if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedY()){
             this.setVelocidadX(speed-30);
             this.setVelocidadY(speed-30);
             batch.draw(animationRest.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());

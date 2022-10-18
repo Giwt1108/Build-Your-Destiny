@@ -7,16 +7,21 @@ package Maps;
 import Entities.AtaqueCorto;
 import Entities.Coleccionable;
 import Entities.Enemies.LinkedCroc;
+import Entities.Enemies.QueueGusanin;
 import Entities.Jugador;
 import Screens.Levels;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -25,7 +30,16 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import estructuras.DoubleLinkedList;
 import estructuras.DoubleNode;
@@ -47,16 +61,22 @@ public class Room {
     //Texturas de la interfaz
     private Texture blank= new Texture(Gdx.files.internal("Images/blank.png"));
     private Texture playerLife=new Texture(Gdx.files.internal("Images/green.png"));
-    private Texture playerBackPack=new Texture(Gdx.files.internal("Images/backpack.png"));
-    private Texture optionsIcon=new Texture(Gdx.files.internal("Images/options.png"));
-    private LinkedCroc [] Crocos= new LinkedCroc[20];
+    private Texture playerBackPackTexture=new Texture(Gdx.files.internal("Images/backpack.png"));
+    private Texture optionsIconTexture=new Texture(Gdx.files.internal("Images/options.png"));
+    private TextureRegion PBRegion,ORegion;
+    private TextureRegionDrawable PBRegionD, ORegionD;
+    //Botones
+    private Button playerBackPack,options;
     //cooldowns y pausa
     private long CoolBaby= System.currentTimeMillis()+15000;
     private long CoolDownAttack=System.currentTimeMillis()+5000;
     private long CoolDownDash=System.currentTimeMillis()+5000;
     private boolean pause=false;
     private boolean fullScreen=true;
+    
     private int amountOfCrocos=0;
+    private LinkedCroc [] Crocos= new LinkedCroc[20];
+    private QueueGusanin pepe;
     private DoubleLinkedList<Coleccionable> coleccionables;
     
     private final float scaleX;
@@ -72,6 +92,35 @@ public class Room {
         width = collisionLayer.getWidth();
         height = collisionLayer.getHeight();
         this.player = player;
+        
+        //Configuramos Botones
+        PBRegion= new TextureRegion(playerBackPackTexture);
+        ORegion= new TextureRegion(optionsIconTexture);
+        PBRegionD= new TextureRegionDrawable(PBRegion);
+        ORegionD= new TextureRegionDrawable(ORegion);
+        playerBackPack= new ImageButton(PBRegionD);
+        options= new ImageButton(ORegionD);
+        
+        playerBackPack.addListener(new ClickListener() {
+         @Override
+            public void clicked(InputEvent event, float x, float y){
+                Gdx.app.exit();
+            }
+        });
+        
+        options.addListener(new ClickListener() {
+         @Override
+            public void clicked(InputEvent event, float x, float y){
+                Gdx.app.exit();
+            }
+        });
+        playerBackPack.setTouchable(Touchable.enabled);
+        options.setTouchable(Touchable.enabled);
+        playerBackPack.setWidth(64);
+        playerBackPack.setHeight(64);
+        options.setWidth(64);
+        options.setHeight(64);
+
         //Iniciamos el primer cococdrilo
         this.Crocos[0]= enemy;
         amountOfCrocos++;
@@ -79,6 +128,12 @@ public class Room {
         Crocos[0].sprite.setY(player.sprite.getY()+10);
         scaleX = ((float) collisionLayer.getWidth())/collisionLayer.getTileWidth();
         scaleY = ((float) collisionLayer.getHeight())/collisionLayer.getTileHeight();
+        
+        // skin del primer gusano
+        pepe = new QueueGusanin();
+        pepe.setSpeed(pepe.getSpeed()); //le damos una velocidad inicial arbitraria
+        pepe.setSprite(new Sprite(new Texture(Gdx.files.internal("Images/Gusano/Gusano-Caminando1.png"))));
+        
         //Configuramos la musica
         music.setLooping(true);
         music.setVolume(0.5f);
@@ -127,7 +182,6 @@ public class Room {
     }
     
     public void render(OrthographicCamera camera, Stage stage, Levels screen){
-        //Revisamos si el jugador pausa o no y si quiere pantalla completa o no 
         boolean paused = Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE);
         boolean full = Gdx.input.isKeyJustPressed(Input.Keys.F1);
         if(this.fullScreen==true && full==true){
@@ -153,19 +207,16 @@ public class Room {
             renderer.getBatch().begin();
              //Renderizamos a todos los cocodrilos
             renderCrocks();
+            //pepe.draw(renderer.getBatch());
            //Render de interfaz
-            if(this.fullScreen==true){
-                renderer.getBatch().draw(blank, player.sprite.getX()-502, player.sprite.getY()+400,410,20);
-                renderer.getBatch().draw(playerLife, player.sprite.getX()-500, player.sprite.getY()+405,(int)player.getSalud()*4,10);
-                renderer.getBatch().draw(playerBackPack, player.sprite.getX()+420, player.sprite.getY()+370,48,48);
-                renderer.getBatch().draw(optionsIcon, player.sprite.getX()+540, player.sprite.getY()+370,48,48);
-            }
-            else{
-                 renderer.getBatch().draw(blank, player.sprite.getX()-302, player.sprite.getY()+247,310,16);
-                 renderer.getBatch().draw(playerLife, player.sprite.getX()-300, player.sprite.getY()+250,(int)player.getSalud()*3,10);
-                 renderer.getBatch().draw(playerBackPack, player.sprite.getX()+255, player.sprite.getY()+230,48,48);
-                 renderer.getBatch().draw(optionsIcon, player.sprite.getX()+320, player.sprite.getY()+230,48,48);
-            }
+           int damageBar=((Gdx.graphics.getWidth()/4)/100)*(int)player.getSalud() ;
+           renderer.getBatch().draw(blank, player.sprite.getX()-Gdx.graphics.getWidth()/3, player.sprite.getY()+Gdx.graphics.getHeight()/3,Gdx.graphics.getWidth()/4,20);
+           renderer.getBatch().draw(playerLife, player.sprite.getX()-Gdx.graphics.getWidth()/3, 5+player.sprite.getY()+Gdx.graphics.getHeight()/3,damageBar,10);
+           options.setPosition((float) (player.getSprite().getX()+Gdx.graphics.getWidth()/3.3), (float) (player.getSprite().getY()+Gdx.graphics.getHeight()/3.3));
+           options.draw(renderer.getBatch(), 20);
+           playerBackPack.setPosition(player.getSprite().getX()+Gdx.graphics.getWidth()/4, (float) (player.getSprite().getY()+Gdx.graphics.getHeight()/3.3));
+           playerBackPack.draw(renderer.getBatch(), 20);
+
             oldX = player.getSprite().getX();
             oldY = player.getSprite().getY();
             player.caminar();
@@ -189,18 +240,14 @@ public class Room {
             renderer.getBatch().setColor(Color.GRAY);
             renderer.render();
             renderer.getBatch().begin();
-            if(this.fullScreen==true){
-                renderer.getBatch().draw(blank, player.sprite.getX()-502, player.sprite.getY()+400,410,20);
-                renderer.getBatch().draw(playerLife, player.sprite.getX()-500, player.sprite.getY()+405,(int)player.getSalud()*4,10);
-                renderer.getBatch().draw(playerBackPack, player.sprite.getX()+420, player.sprite.getY()+370,48,48);
-                renderer.getBatch().draw(optionsIcon, player.sprite.getX()+540, player.sprite.getY()+370,48,48);
-            }
-            else{
-                 renderer.getBatch().draw(blank, player.sprite.getX()-302, player.sprite.getY()+247,310,16);
-                 renderer.getBatch().draw(playerLife, player.sprite.getX()-300, player.sprite.getY()+250,(int)player.getSalud()*3,10);
-                 renderer.getBatch().draw(playerBackPack, player.sprite.getX()+255, player.sprite.getY()+230,48,48);
-                 renderer.getBatch().draw(optionsIcon, player.sprite.getX()+320, player.sprite.getY()+230,48,48);
-            }
+           //Render de interfaz
+            int damageBar=((Gdx.graphics.getWidth()/4)/100)*(int)player.getSalud() ;
+            renderer.getBatch().draw(blank, player.sprite.getX()-Gdx.graphics.getWidth()/3, player.sprite.getY()+Gdx.graphics.getHeight()/3,Gdx.graphics.getWidth()/4,20);
+            renderer.getBatch().draw(playerLife, player.sprite.getX()-Gdx.graphics.getWidth()/3, 5+player.sprite.getY()+Gdx.graphics.getHeight()/3,damageBar,10);
+            options.setPosition((float) (player.getSprite().getX()+Gdx.graphics.getWidth()/3.3), (float) (player.getSprite().getY()+Gdx.graphics.getHeight()/3.3));
+            options.draw(renderer.getBatch(), 20);
+            playerBackPack.setPosition(player.getSprite().getX()+Gdx.graphics.getWidth()/4, (float) (player.getSprite().getY()+Gdx.graphics.getHeight()/3.3));
+            playerBackPack.draw(renderer.getBatch(), 20);
             DrawColeccionables();
             renderer.getBatch().end();
         }
@@ -232,7 +279,6 @@ public class Room {
             Crocos[i].animate(renderer.getBatch());
             //revisa si el cocodrilo en la posicion i esta atacando el jugador y si si le quita daño
             player.underAttack(Crocos[i].playerNear(player.sprite.getX(), player.sprite.getY()),0.1f);
-            System.out.println("Crocos "+ i+"  Life: "+ Crocos[i].getSalud());
              }
         }
 
@@ -412,6 +458,17 @@ public class Room {
         //System.out.println(x+", "+y +"//" + scaleX+", "+scaleY);
         TiledMapTileLayer.Cell cell = collisionLayer.getCell((int) (scaleX*x), (int) (scaleY*y));
         return (cell!=null)&&(cell.getTile()!=null)&&(cell.getTile().getProperties().containsKey("blocked"));
+    }
+      private TextButton.TextButtonStyle createButtonStyle(BitmapFont bitFont, Skin skin){
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = skin.getDrawable("Button.up");
+        textButtonStyle.down = skin.getDrawable("Button.down");
+        
+        textButtonStyle.pressedOffsetX = 1;
+        textButtonStyle.pressedOffsetY = -1;
+        
+        textButtonStyle.font = bitFont;
+        return textButtonStyle;
     }
     
     public Jugador getPlayer(){

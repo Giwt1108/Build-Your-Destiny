@@ -35,35 +35,35 @@ public class Enemigo extends Entidad{
      
      //Perseguir al jugador si el enemigo lo necesita 
      public void followPlayer(float x,float y){
-        if(this.sprite.getX()<x && this.sprite.getY()<y && !collitedY && !collitedX){
+        if(this.sprite.getX()+10<x && this.sprite.getY()+10<y && !collitedY && !collitedX){
             this.setVelocidadY(this.getSpeed()-50);
             this.setVelocidadX(this.getSpeed()-50);
         }
-        else if(this.sprite.getX()>x && this.sprite.getY()<y && !collitedY && !collitedX){
+        else if(this.sprite.getX()-10>x && this.sprite.getY()+10<y && !collitedY && !collitedX){
              this.setVelocidadY(this.getSpeed()-50);
              this.setVelocidadX(-this.getSpeed()+50);
         }
-        else if(this.sprite.getX()>x && this.sprite.getY()>y && !collitedY && !collitedX){
+        else if(this.sprite.getX()-10>x && this.sprite.getY()-10>y && !collitedY && !collitedX){
             this.setVelocidadY(-this.getSpeed()+50);
             this.setVelocidadX(-this.getSpeed()+50);
         }
-        else if(this.getX()<x && this.sprite.getY()>y && !collitedY && !collitedX){
+        else if(this.getX()+10<x && this.sprite.getY()-10>y && !collitedY && !collitedX){
              this.setVelocidadY(-this.getSpeed()+50);
              this.setVelocidadX(this.getSpeed()-50);
         }
-        else if(this.sprite.getX()<x && this.sprite.getY()<=y && !collitedY && !collitedX){
+        else if(this.sprite.getX()+5<=x && !collitedY && !collitedX){
             this.setVelocidadY(0);
-            this.setVelocidadX(this.getSpeed()-50);
+           this.setVelocidadX(this.getSpeed()-50);
         }
-        else if(this.sprite.getX()>x && this.sprite.getY()>=y && !collitedY && !collitedX){
+        else if(this.sprite.getX()-5>=x &&  !collitedY && !collitedX){
             this.setVelocidadY(0);
             this.setVelocidadX(-this.getSpeed()+50);
-        }
-        else if(this.sprite.getX()<=x && this.sprite.getY()<y && !collitedY && !collitedX){
+          }
+        else if(this.sprite.getY()+5<=y  && !collitedY && !collitedX){
             this.setVelocidadY(this.getSpeed()-50);
             this.setVelocidadX(0);
         }
-        else if(this.sprite.getX()>=x && this.sprite.getY()>y && !collitedY && !collitedX){
+        else if( this.sprite.getY()-5>=y && !collitedY && !collitedX){
             this.setVelocidadY(-this.getSpeed()+50);
             this.setVelocidadX(0);
         }

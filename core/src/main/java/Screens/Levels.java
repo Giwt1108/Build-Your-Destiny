@@ -39,7 +39,7 @@ public class Levels implements Screen {
     private Stage stage;
     private TextButton button;
     private DoubleLinkedList<Coleccionable>  coleccionables;
-    private InputMultiplexer inputMultiplexer = new InputMultiplexer();
+    protected InputMultiplexer inputMultiplexer = new InputMultiplexer();
     
     @Override
     public void show() { 

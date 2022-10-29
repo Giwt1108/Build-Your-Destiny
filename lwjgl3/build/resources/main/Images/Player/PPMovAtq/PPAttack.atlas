@@ -1,34 +1,34 @@
 
 PPAttack.png
-size: 74, 34
+size: 107, 49
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 PPAttack
   rotate: false
   xy: 2, 2
-  size: 22, 30
-  orig: 32, 32
-  offset: 6, 1
+  size: 33, 45
+  orig: 48, 48
+  offset: 9, 2
   index: 1
 PPAttack
   rotate: false
-  xy: 26, 2
-  size: 22, 30
-  orig: 32, 32
-  offset: 6, 1
+  xy: 37, 2
+  size: 33, 45
+  orig: 48, 48
+  offset: 9, 2
   index: 3
 PPAttack
   rotate: false
-  xy: 26, 2
-  size: 22, 30
-  orig: 32, 32
-  offset: 6, 1
+  xy: 37, 2
+  size: 33, 45
+  orig: 48, 48
+  offset: 9, 2
   index: 0
 PPAttack
   rotate: false
-  xy: 50, 2
-  size: 22, 30
-  orig: 32, 32
-  offset: 6, 1
+  xy: 72, 2
+  size: 33, 45
+  orig: 48, 48
+  offset: 9, 2
   index: 2

@@ -59,7 +59,7 @@ public class Room {
     private TiledMapTileLayer collisionLayer;
     private Jugador player;
     //Texturas de la interfaz
-    private Texture blank= new Texture(Gdx.files.internal("Images/blank.png"));
+    private Texture blank= new Texture(Gdx.files.internal("Images/BarraDeVida.png"));
     private Texture playerLife=new Texture(Gdx.files.internal("Images/green.png"));
     private Texture playerBackPackTexture=new Texture(Gdx.files.internal("Images/backpack.png"));
     private Texture optionsIconTexture=new Texture(Gdx.files.internal("Images/options.png"));
@@ -101,19 +101,19 @@ public class Room {
         playerBackPack= new ImageButton(PBRegionD);
         options= new ImageButton(ORegionD);
         
-        playerBackPack.addListener(new ClickListener() {
-         @Override
-            public void clicked(InputEvent event, float x, float y){
-                Gdx.app.exit();
-            }
-        });
+ //       playerBackPack.addListener(new ClickListener() {
+  //       @Override
+      //      public void clicked(InputEvent event, float x, float y){
+       //         Gdx.app.exit();
+        //    }
+     //   });
         
-        options.addListener(new ClickListener() {
-         @Override
-            public void clicked(InputEvent event, float x, float y){
-                Gdx.app.exit();
-            }
-        });
+      //  options.addListener(new ClickListener() {
+       //  @Override
+         //   public void clicked(InputEvent event, float x, float y){
+        //       Gdx.app.exit();
+   //         }
+    //    });
         playerBackPack.setTouchable(Touchable.enabled);
         options.setTouchable(Touchable.enabled);
         playerBackPack.setWidth(64);
@@ -128,12 +128,7 @@ public class Room {
         Crocos[0].sprite.setY(player.sprite.getY()+10);
         scaleX = ((float) collisionLayer.getWidth())/collisionLayer.getTileWidth();
         scaleY = ((float) collisionLayer.getHeight())/collisionLayer.getTileHeight();
-        
-        // skin del primer gusano
-        pepe = new QueueGusanin();
-        pepe.setSpeed(pepe.getSpeed()); //le damos una velocidad inicial arbitraria
-        pepe.setSprite(new Sprite(new Texture(Gdx.files.internal("Images/Gusano/Gusano-Caminando1.png"))));
-        
+
         //Configuramos la musica
         music.setLooping(true);
         music.setVolume(0.5f);

@@ -78,14 +78,14 @@ public class Jugador extends Entidad implements InputProcessor{
     public void animate(Batch batch){
         if(this.attacking==true){
             batch.draw(animationAttack.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
-            System.out.println("Deberia estar atacando");
+            //System.out.println("Deberia estar atacando");
         }else{
             if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedY()){
                 batch.draw(animationRest.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
-                System.out.println("Deberia estar descansando");
+                //System.out.println("Deberia estar descansando");
             }else{
                 batch.draw(animationWalk.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
-                System.out.println("Deberia estar caminando");
+                //System.out.println("Deberia estar caminando");
             }
         }   
     }

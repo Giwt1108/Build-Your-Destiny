@@ -92,6 +92,7 @@ public class Room {
         collisionLayer = getCollisionLayer();
         width = collisionLayer.getWidth();
         height = collisionLayer.getHeight();
+        
         this.player = player;
         
         //Configuramos Botones

@@ -23,6 +23,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import estructuras.DoubleLinkedList;
 import estructuras.DoubleNode;
 
+import Maps.TmxGestor;
+
 /**
  *
  * @author Sebastian
@@ -41,8 +43,14 @@ public class Levels implements Screen {
     private DoubleLinkedList<Coleccionable>  coleccionables;
     protected InputMultiplexer inputMultiplexer = new InputMultiplexer();
     
+    private TmxGestor mapGestor;
+    
     @Override
     public void show() { 
+        
+        mapGestor = new TmxGestor(1,5,4);
+        mapGestor.writeTmx();
+        
         camera = new OrthographicCamera(); 
 
         stage = new Stage();
@@ -53,7 +61,7 @@ public class Levels implements Screen {
         inputMultiplexer.addProcessor(player);
         Gdx.input.setInputProcessor(inputMultiplexer);
         
-        room = new Room("Maps/Room1.tmx", player, enemy,coleccionables);
+        room = new Room("Maps/level1.tmx", player, enemy,coleccionables);
 
         renderer = room.getRenderer();
         Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
@@ -68,9 +76,7 @@ public class Levels implements Screen {
         camera.position.set(room.getPlayer().getSprite().getX()+room.getPlayer().getSprite().getWidth()/2,room.getPlayer().getSprite().getY()+room.getPlayer().getSprite().getHeight()/2,0);
         camera.update();
         
-
         room.render(camera,stage,this);
-    
     }
 
     @Override
@@ -127,12 +133,17 @@ public class Levels implements Screen {
         player.setSprite(new Sprite(new Texture(Gdx.files.internal("Images/Player/PersonajePrincipal.png"))));
 
         //Ponemos el rectangulo para nuestro player
-        player.setX(800 / 2 - 64 / 2);   //Aqui lo estamos centrando horizontalmente
-        player.setY(480/2 - 64/2); //Lo dejamos 20 pixeles sobre el borde
+        float x,y;
+        
+        x = mapGestor.getInitPoint()[1]*32*32+512;
+        y = (5-mapGestor.getInitPoint()[0])*32*32+512;
+        
+        player.setX(x);   //Aqui lo estamos centrando horizontalmente
+        player.setY(y); //Lo dejamos 20 pixeles sobre el borde
         player.setRegionWidth( 32);
         player.setRegionHeight(32);
-        player.getSprite().setX(800 / 2 - 64 / 2);   //Aqui lo estamos centrando horizontalmente
-        player.getSprite().setY(480/2 - 64/2); //Lo dejamos 20 pixeles sobre el borde
+        player.getSprite().setX(x);   //Aqui lo estamos centrando horizontalmente
+        player.getSprite().setY(y); //Lo dejamos 20 pixeles sobre el borde
         player.getSprite().setRegionWidth( 32);
         player.getSprite().setRegionHeight(32);
     }

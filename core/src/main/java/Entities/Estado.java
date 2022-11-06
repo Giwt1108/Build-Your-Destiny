@@ -1,5 +1,7 @@
 package Entities;
 
+import Entities.Enemies.Enemigo;
+
 public abstract class Estado {
     private int efecto;
     private boolean activo;

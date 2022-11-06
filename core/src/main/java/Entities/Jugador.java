@@ -15,6 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 
 import estructuras.ListaEnlazada;
+import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Jugador extends Entidad implements InputProcessor{
 
@@ -22,9 +27,17 @@ public class Jugador extends Entidad implements InputProcessor{
     private Habilidad habilidad; //Aqui es un objeto Habilidad
     private int misiones; //Aqui es una estructura de misiones
     private TextureAtlas atlas;
-    private Animation<TextureRegion> animationWalk,animationRest;
+    private Animation<TextureRegion> animationWalk,animationRest,animationAttack;
     private float stateTime;
-    
+    private float CoolDownAttack=0;
+    private float CoolDownDash=0;
+    private boolean attacking=false;
+    private boolean dashing=false;
+    private boolean canAttack=true; 
+    private boolean canDash=true;
+    public boolean moridoBienMorido=false;
+   //El Multiplicador nos va a permitir saber por cuanto queremos cambiar ciertos aspectos de nuestro jugador
+    private int multiplicador=1;
 
     public void draw(Batch spriteBatch) {
         super.draw(spriteBatch);
@@ -63,11 +76,16 @@ public class Jugador extends Entidad implements InputProcessor{
     }
     
     public void animate(Batch batch){
-        if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedX()){
+        
+        if(this.attacking==true){
+            batch.draw(animationAttack.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
+        }
+        if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedY()){
             batch.draw(animationRest.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
         }else{
             batch.draw(animationWalk.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
         }
+    
     }
     
     private void startAnimation(){
@@ -77,6 +95,9 @@ public class Jugador extends Entidad implements InputProcessor{
         atlas = new TextureAtlas("Images/Player/PPDescanso/PPRest.atlas");
         Array<TextureAtlas.AtlasRegion>  rest = atlas.findRegions("PPDescanso");
         animationRest = new Animation(0.15f,rest, Animation.PlayMode.LOOP);
+        atlas = new TextureAtlas("Images/Player/PPMovAtq/PPAttack.atlas");
+        Array<TextureAtlas.AtlasRegion>  attack = atlas.findRegions("PPAttack");
+        animationAttack = new Animation(0.15f,attack, Animation.PlayMode.LOOP);
         stateTime=0;
     }
     
@@ -115,6 +136,42 @@ public class Jugador extends Entidad implements InputProcessor{
         stateTime += delta;
     }
     
+    //Esta funcion nos deja saber si el jugador esta siendo atacado o no
+    public void underAttack(boolean auch,float amount){
+        if(auch==true){
+            if(this.salud>0){
+                this.salud=salud-amount;
+            }
+            else{
+                this.dispose();
+                this.moridoBienMorido=true;
+            }
+        }
+        else{
+        }
+    }
+    public boolean isAttacking(){
+        return this.attacking;}
+    
+    public void attack(){
+
+        if(System.currentTimeMillis()>CoolDownAttack){
+            this.canAttack=true;
+            
+        }
+        if(this.canAttack==true){
+            this.CoolDownAttack=System.currentTimeMillis()+1000;
+            this.attacking=true;
+            this.canAttack=false;
+        }           
+        System.out.println((this.CoolDownAttack+1000)-this.CoolDownAttack);
+    }
+      public void dash(){
+          this.multiplicador=2;
+          this.dashing=true;
+          this.canDash=false;
+    }
+    
     //HAY QUE CORREGIR LOS CONSTRUCTORES PONIENDO EL TIPO DE DATO CORRECTO
     public Jugador(ListaEnlazada<Coleccionable> coleccionables, int misiones, int velocidad, int estamina, int alcance, int suerte, int velocidadAtaque, int ataque, int salud, Habilidad habilidad) {
         super(estamina, alcance, suerte, velocidadAtaque, ataque, salud, new Sprite());
@@ -145,25 +202,34 @@ public class Jugador extends Entidad implements InputProcessor{
         @Override
     public boolean keyDown(int keycode) {
         switch(keycode){
+            //Shift para dar un Dash que se implementara mas tarde xd
+            case Input.Keys.SHIFT_LEFT:
+               dash();
+                break;
+            case Input.Keys.E:
+                attack();
+                break;
             case Input.Keys.W:
-                if(!isCollitedY()){
-                    setVelocidadY(getSpeed());
+               if (!isCollitedY()){
+                    setVelocidadY(getSpeed()*multiplicador);
                 }
                 break;
             case Input.Keys.A:
                 if(!isCollitedX()){
-                    setVelocidadX(-getSpeed());
+                    setVelocidadX(-getSpeed()*multiplicador);
                 }
+                sprite.flip(true, false);
                 break;
             case Input.Keys.S:
                 if(!isCollitedY()){
-                    setVelocidadY(-getSpeed());
+                    setVelocidadY(-getSpeed()*multiplicador);
                 }
                 break;
             case Input.Keys.D:
                 if(!isCollitedX()){
-                    setVelocidadX(getSpeed());
+                    setVelocidadX(getSpeed()*multiplicador);
                 }
+                sprite.flip(true, false);
                 break;
         }        
         return true;
@@ -172,11 +238,22 @@ public class Jugador extends Entidad implements InputProcessor{
     @Override
     public boolean keyUp(int keycode) {
         switch(keycode){
+            case Input.Keys.SHIFT_LEFT:
+                this.dashing=false;
+                this.multiplicador=1;
+                break;
+            case Input.Keys.E:
+                this.attacking=false;
+                break;
             case Input.Keys.W:
+                setVelocidadY(0);
+                break;
             case Input.Keys.S:
                 setVelocidadY(0);
                 break;
             case Input.Keys.A:
+                setVelocidadX(0);
+                break;
             case Input.Keys.D:
                 setVelocidadX(0);
         }        

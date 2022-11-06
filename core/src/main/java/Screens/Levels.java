@@ -6,6 +6,7 @@ package Screens;
 
 import Entities.Ciencias;
 import Entities.Coleccionable;
+import Entities.Enemies.LinkedCroc;
 import Entities.Humanas;
 import Entities.Jugador;
 import com.badlogic.gdx.Gdx;
@@ -32,12 +33,13 @@ public class Levels implements Screen {
     private Room room;
     private OrthogonalTiledMapRenderer renderer;
     private Jugador player;
+    private LinkedCroc enemy;
     private boolean buttonState = false;
     
     private Stage stage;
     private TextButton button;
     private DoubleLinkedList<Coleccionable>  coleccionables;
-    private InputMultiplexer inputMultiplexer = new InputMultiplexer();
+    protected InputMultiplexer inputMultiplexer = new InputMultiplexer();
     
     @Override
     public void show() { 
@@ -51,8 +53,11 @@ public class Levels implements Screen {
         inputMultiplexer.addProcessor(player);
         Gdx.input.setInputProcessor(inputMultiplexer);
         
-        room = new Room("Maps/Room1.tmx", player, coleccionables);
+        room = new Room("Maps/Room1.tmx", player, enemy,coleccionables);
+
         renderer = room.getRenderer();
+        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+
     }
 
     @Override
@@ -104,6 +109,7 @@ public class Levels implements Screen {
     
     public void init(){
         initPlayer();
+        initEnemy();
         initColeccionables(10);
     }
     
@@ -113,7 +119,7 @@ public class Levels implements Screen {
         Ciencias habilidadCien = new Ciencias();
         habilidadCien.setVelocidad(100);
         
-        // PONEMOS LA IMAGEN/SKIN DEL JUADOR
+        // PONEMOS LA IMAGEN/SKIN DEL JUGADOR
         player = new Jugador();
         
         player.setHabilidad(habilidadCien);
@@ -121,10 +127,28 @@ public class Levels implements Screen {
         player.setSprite(new Sprite(new Texture(Gdx.files.internal("Images/Player/PersonajePrincipal.png"))));
 
         //Ponemos el rectangulo para nuestro player
+        player.setX(800 / 2 - 64 / 2);   //Aqui lo estamos centrando horizontalmente
+        player.setY(480/2 - 64/2); //Lo dejamos 20 pixeles sobre el borde
+        player.setRegionWidth( 32);
+        player.setRegionHeight(32);
         player.getSprite().setX(800 / 2 - 64 / 2);   //Aqui lo estamos centrando horizontalmente
         player.getSprite().setY(480/2 - 64/2); //Lo dejamos 20 pixeles sobre el borde
         player.getSprite().setRegionWidth( 32);
         player.getSprite().setRegionHeight(32);
+    }
+    public void initEnemy(){
+        // skin del primer croco
+        enemy = new LinkedCroc();
+        enemy.setSpeed(enemy.getSpeed()); //le damos una velocidad inicial arbitraria
+        enemy.setSprite(new Sprite(new Texture(Gdx.files.internal("Images/Cocodrile/enemiCocodrile.png"))));
+        
+        //Rectangulo del primer croco
+        enemy.setX(1000 / 2 - 128 / 2);   //Aqui lo estamos centrando horizontalmente
+        enemy.sprite.setX(1000 / 2 - 128 / 2);   //Aqui lo estamos centrando horizontalmente
+        enemy.setY(680/2 - 128/2); //Lo dejamos 20 pixeles sobre el borde
+        enemy.sprite.setY(680/2 - 128/2); //Lo dejamos 20 pixeles sobre el borde
+        enemy.getSprite().setRegionWidth( 64);
+        enemy.getSprite().setRegionHeight(64);
     }
     
     public void initColeccionables(int num){

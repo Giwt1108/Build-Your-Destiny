@@ -1,5 +1,7 @@
 package Entities;
 
+import Entities.Enemies.Enemigo;
+
 public class Eructado extends Estado{
 
     @Override

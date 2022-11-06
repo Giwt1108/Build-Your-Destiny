@@ -12,21 +12,24 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class Entidad extends Sprite {
     //private int velocidad; //Debería ser 100? deberia ser final?
-    private Vector2 velocidad = new Vector2();
-    private float speed = 300;
+    protected Vector2 velocidad = new Vector2();
+    protected float speed = 300;
     //private Vector2 velocidad;
-    private int estamina;
-    private int alcance;
-    private int suerte;
-    private int velocidadAtaque;
-    private int ataque;
-    private int salud;
-    private Sprite sprite;
-    private boolean collitedX,collitedY;
+    protected int estamina;
+    protected int alcance;
+    protected int suerte;
+    protected int velocidadAtaque;
+    protected int ataque;
+    protected float salud;
+    public Sprite sprite;
+    public boolean collitedX;
+    public boolean collitedY;
     //private Estado estado;
 
     public void dispose(){
-        this.sprite.getTexture().dispose();
+        if(this.sprite!=null){
+            this.sprite.getTexture().dispose();
+        }
     }
 
 
@@ -126,11 +129,11 @@ public class Entidad extends Sprite {
         this.ataque = ataque;
     }
 
-    public int getSalud() {
+    public float getSalud() {
         return salud;
     }
 
-    public void setSalud(int salud) {
+    public void setSalud(float salud) {
         this.salud = salud;
     }
 
@@ -151,7 +154,7 @@ public class Entidad extends Sprite {
     }
 
     public Entidad(){
-        this(0,0,0,0,0,0,new Sprite(new Texture(Gdx.files.internal("Images/Player/PersonajePrincipal.png"))));
+        this(0,0,0,0,0,100,new Sprite(new Texture(Gdx.files.internal("Images/Player/PersonajePrincipal.png"))));
     }
 
 

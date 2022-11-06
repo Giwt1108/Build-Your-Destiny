@@ -39,7 +39,7 @@ public class Levels implements Screen {
     private Stage stage;
     private TextButton button;
     private DoubleLinkedList<Coleccionable>  coleccionables;
-    private InputMultiplexer inputMultiplexer = new InputMultiplexer();
+    protected InputMultiplexer inputMultiplexer = new InputMultiplexer();
     
     @Override
     public void show() { 
@@ -54,7 +54,10 @@ public class Levels implements Screen {
         Gdx.input.setInputProcessor(inputMultiplexer);
         
         room = new Room("Maps/Room1.tmx", player, enemy,coleccionables);
+
         renderer = room.getRenderer();
+        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+
     }
 
     @Override
@@ -134,12 +137,12 @@ public class Levels implements Screen {
         player.getSprite().setRegionHeight(32);
     }
     public void initEnemy(){
-        // PONEMOS LA IMAGEN/SKIN DEL JUGADOR
+        // skin del primer croco
         enemy = new LinkedCroc();
         enemy.setSpeed(enemy.getSpeed()); //le damos una velocidad inicial arbitraria
         enemy.setSprite(new Sprite(new Texture(Gdx.files.internal("Images/Cocodrile/enemiCocodrile.png"))));
         
-        //Ponemos el rectangulo para nuestro player
+        //Rectangulo del primer croco
         enemy.setX(1000 / 2 - 128 / 2);   //Aqui lo estamos centrando horizontalmente
         enemy.sprite.setX(1000 / 2 - 128 / 2);   //Aqui lo estamos centrando horizontalmente
         enemy.setY(680/2 - 128/2); //Lo dejamos 20 pixeles sobre el borde

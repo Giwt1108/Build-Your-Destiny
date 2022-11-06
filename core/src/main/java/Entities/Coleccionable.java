@@ -52,7 +52,7 @@ public class Coleccionable {
         //System.out.println("Se ejecuta");
     }
 
-    public int tamañoCollecionable(ListaEnlazada coleccionables){
+    public int tamanoCollecionable(ListaEnlazada coleccionables){
         int length = coleccionables.size();
         return length;
     }

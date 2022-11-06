@@ -1,0 +1,90 @@
+
+QueueGus.png
+size: 128, 128
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+GusWalk
+  rotate: false
+  xy: 2, 26
+  size: 41, 28
+  orig: 48, 48
+  offset: 1, 8
+  index: 0
+GusWalk
+  rotate: false
+  xy: 2, 26
+  size: 41, 28
+  orig: 48, 48
+  offset: 1, 8
+  index: 3
+GusWalk
+  rotate: false
+  xy: 2, 26
+  size: 41, 28
+  orig: 48, 48
+  offset: 1, 8
+  index: 3
+GusRest
+  rotate: false
+  xy: 2, 26
+  size: 41, 28
+  orig: 48, 48
+  offset: 1, 8
+  index: 0
+GusAtq
+  rotate: false
+  xy: 2, 26
+  size: 41, 28
+  orig: 48, 48
+  offset: 1, 8
+  index: 0
+GusWalk
+  rotate: false
+  xy: 45, 62
+  size: 41, 28
+  orig: 48, 48
+  offset: 1, 8
+  index: 2
+GusWalk
+  rotate: false
+  xy: 45, 32
+  size: 41, 28
+  orig: 48, 48
+  offset: 1, 8
+  index: 1
+GusRest
+  rotate: false
+  xy: 85, 98
+  size: 41, 28
+  orig: 48, 48
+  offset: 1, 8
+  index: 1
+GusRest
+  rotate: false
+  xy: 45, 2
+  size: 41, 28
+  orig: 48, 48
+  offset: 1, 8
+  index: 2
+GusAtq
+  rotate: false
+  xy: 2, 92
+  size: 41, 34
+  orig: 48, 48
+  offset: 1, 8
+  index: 3
+GusAtq
+  rotate: false
+  xy: 2, 56
+  size: 41, 34
+  orig: 48, 48
+  offset: 1, 8
+  index: 2
+GusAtq
+  rotate: false
+  xy: 45, 92
+  size: 38, 34
+  orig: 48, 48
+  offset: 1, 8
+  index: 1

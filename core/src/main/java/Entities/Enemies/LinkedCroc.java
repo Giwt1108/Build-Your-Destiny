@@ -16,21 +16,16 @@ import com.badlogic.gdx.utils.Array;
 import java.lang.Math; 
 
 
-public class LinkedCroc extends Entidad{
-    private TextureAtlas atlas=new TextureAtlas("Images/Cocodrile/Croc.atlas");;
-    private Animation<TextureRegion> animationWalk,animationRest,animationAttack;
+public class LinkedCroc extends Enemigo{
+
     private static int sons=0;
     private boolean father;
-    private boolean isAttacking=true;
-    private boolean canAttack=true;
     private boolean canHaveChildren;
-    private float momentOfAttack;
-    private float stateTime=0;
-    private float stateAttack=0;
     
     public LinkedCroc(){
         //Estamina, alcance, suerte, velocidadAtaque, ataque, salud, sprite
-        super(100,500,100,5,10,100,new Sprite());
+        super(100,30,100,5,10,30,new Sprite());
+        this.atlas=new TextureAtlas("Images/Cocodrile/Croc.atlas");
         if(sons==0){
             this.father=true;
             this.canHaveChildren=true;
@@ -38,12 +33,15 @@ public class LinkedCroc extends Entidad{
         sons++;
         startAnimation();
     }
+    
+    //Devuelve verdadero si el enemigo puede tener hijos o no 
     public boolean babyExplotion(){
         if(this.father==true){
            return true;
         }
         return false;
     }
+    //Como actua el cocodrilo si el enemigo esta cerca
     public boolean playerNear(float X, float Y){
         if(X<0){X=X*(-1);}
         if(Y<0){Y=Y*(-1);}
@@ -52,7 +50,7 @@ public class LinkedCroc extends Entidad{
         double y=(double)Y-this.sprite.getY();
         distance=(x*x)+(y*y);
         distance=Math.sqrt(distance);
-        if(distance<10){
+        if(distance<this.alcance){
             this.setVelocidadX(0);
             this.setVelocidadY(0);
             this.isAttacking=true;
@@ -64,72 +62,24 @@ public class LinkedCroc extends Entidad{
             return false;
             }
         else{
+            this.setVelocidadX(0);
+            this.setVelocidadY(0);
             patrol();
             this.isAttacking=false;
             return false;
         }
     }
     public void patrol(){
-        float startX=this.sprite.getX();
-        if(this.sprite.getX()<startX+50 && !collitedX){
-            this.setVelocidadX(this.getSpeed()-50);
-        }
-        else if(this.sprite.getX()>startX-50 && !collitedX){
-            this.setVelocidadX(-this.getSpeed()+50);
+        this.setVelocidadX((float) (Math.random()*10));
+        if(isCollitedX()){
+            this.setVelocidadY(speed+200);
         }
     }
     
-    public void followPlayer(float x,float y){
-        if(this.sprite.getX()<x && this.sprite.getY()<y && !collitedY && !collitedX){
-            this.setVelocidadY(this.getSpeed()-50);
-            this.setVelocidadX(this.getSpeed()-50);
-        }
-        else if(this.sprite.getX()>x && this.sprite.getY()<y && !collitedY && !collitedX){
-             this.setVelocidadY(this.getSpeed()-50);
-             this.setVelocidadX(-this.getSpeed()+50);
-        }
-        else if(this.sprite.getX()>x && this.sprite.getY()>y && !collitedY && !collitedX){
-            this.setVelocidadY(-this.getSpeed()+50);
-            this.setVelocidadX(-this.getSpeed()+50);
-        }
-        else if(this.getX()<x && this.sprite.getY()>y && !collitedY && !collitedX){
-             this.setVelocidadY(-this.getSpeed()+50);
-             this.setVelocidadX(this.getSpeed()-50);
-        }
-        else if(this.sprite.getX()<x && this.sprite.getY()==y && !collitedY && !collitedX){
-            this.setVelocidadY(0);
-            this.setVelocidadX(this.getSpeed()-50);
-        }
-        else if(this.sprite.getX()>x && this.sprite.getY()==y && !collitedY && !collitedX){
-            this.setVelocidadY(0);
-            this.setVelocidadX(-this.getSpeed()+50);
-        }
-        else if(this.sprite.getX()==x && this.sprite.getY()<y && !collitedY && !collitedX){
-            this.setVelocidadY(this.getSpeed()-50);
-            this.setVelocidadX(0);
-        }
-        else if(this.sprite.getX()==x && this.sprite.getY()>y && !collitedY && !collitedX){
-            this.setVelocidadY(-this.getSpeed()+50);
-            this.setVelocidadX(0);
-        }
-    }
-     public void caminar(){
-
-        float currentX = getSprite().getX();
-        float currentY = getSprite().getY();
-        getSprite().setX(currentX + getVelocidadX() * Gdx.graphics.getDeltaTime());
-        getSprite().setY(currentY + getVelocidadY() * Gdx.graphics.getDeltaTime());
-        
-    }
-     public void addStateTime(float delta){
-        stateTime += delta;
-    }
      public void resetAttack(){
          stateAttack=0;
      }
-     public void resetStateTime(){
-        stateTime=0;
-    }
+    
     public void draw(Batch spriteBatch) {
         super.draw(spriteBatch);
     }
@@ -139,7 +89,7 @@ public class LinkedCroc extends Entidad{
             this.setVelocidadX(0);
             this.setVelocidadX(0);
         }
-        else if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedX()){
+        else if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedY()){
             this.setVelocidadX(speed-30);
             this.setVelocidadY(speed-30);
             batch.draw(animationRest.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());

@@ -217,6 +217,7 @@ public class Jugador extends Entidad implements InputProcessor{
                 if(!isCollitedX()){
                     setVelocidadX(-getSpeed()*multiplicador);
                 }
+                sprite.flip(true, false);
                 break;
             case Input.Keys.S:
                 if(!isCollitedY()){
@@ -227,6 +228,7 @@ public class Jugador extends Entidad implements InputProcessor{
                 if(!isCollitedX()){
                     setVelocidadX(getSpeed()*multiplicador);
                 }
+                sprite.flip(true, false);
                 break;
         }        
         return true;

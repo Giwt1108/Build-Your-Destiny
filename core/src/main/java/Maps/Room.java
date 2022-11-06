@@ -6,6 +6,7 @@ package Maps;
 
 import Entities.AtaqueCorto;
 import Entities.Coleccionable;
+import Entities.Enemies.Enemigo;
 import Entities.Enemies.LinkedCroc;
 import Entities.Enemies.QueueGusanin;
 import Entities.Jugador;
@@ -76,7 +77,7 @@ public class Room {
     
     private int amountOfCrocos=0;
     private LinkedCroc [] Crocos= new LinkedCroc[20];
-    private QueueGusanin pepe;
+    private QueueGusanin[] Gusanos= new QueueGusanin[50];
     private DoubleLinkedList<Coleccionable> coleccionables;
     
     private final float scaleX;
@@ -100,20 +101,6 @@ public class Room {
         ORegionD= new TextureRegionDrawable(ORegion);
         playerBackPack= new ImageButton(PBRegionD);
         options= new ImageButton(ORegionD);
-        
- //       playerBackPack.addListener(new ClickListener() {
-  //       @Override
-      //      public void clicked(InputEvent event, float x, float y){
-       //         Gdx.app.exit();
-        //    }
-     //   });
-        
-      //  options.addListener(new ClickListener() {
-       //  @Override
-         //   public void clicked(InputEvent event, float x, float y){
-        //       Gdx.app.exit();
-   //         }
-    //    });
         playerBackPack.setTouchable(Touchable.enabled);
         options.setTouchable(Touchable.enabled);
         playerBackPack.setWidth(64);
@@ -121,17 +108,21 @@ public class Room {
         options.setWidth(64);
         options.setHeight(64);
 
-        //Iniciamos el primer cococdrilo
+        //Iniciamos primeros Enemigos
         this.Crocos[0]= enemy;
+        this.Gusanos[0]=new QueueGusanin();
         amountOfCrocos++;
         Crocos[0].sprite.setX(player.sprite.getX()+10);
         Crocos[0].sprite.setY(player.sprite.getY()+10);
+        Gusanos[0].sprite.setX(player.sprite.getX()+10);
+        Gusanos[0].sprite.setY(player.sprite.getY()-10);
+        
         scaleX = ((float) collisionLayer.getWidth())/collisionLayer.getTileWidth();
         scaleY = ((float) collisionLayer.getHeight())/collisionLayer.getTileHeight();
 
         //Configuramos la musica
         music.setLooping(true);
-        music.setVolume(0.5f);
+        music.setVolume(0.1f);
         music.play();
         initAnimation();
        
@@ -202,11 +193,11 @@ public class Room {
             renderer.getBatch().begin();
              //Renderizamos a todos los cocodrilos
             renderCrocks();
-            //pepe.draw(renderer.getBatch());
+            renderGusanos();
            //Render de interfaz
-           int damageBar=((Gdx.graphics.getWidth()/4)/100)*(int)player.getSalud() ;
-           renderer.getBatch().draw(blank, player.sprite.getX()-Gdx.graphics.getWidth()/3, player.sprite.getY()+Gdx.graphics.getHeight()/3,Gdx.graphics.getWidth()/4,20);
-           renderer.getBatch().draw(playerLife, player.sprite.getX()-Gdx.graphics.getWidth()/3, 5+player.sprite.getY()+Gdx.graphics.getHeight()/3,damageBar,10);
+           int damageBar=((Gdx.graphics.getWidth()/4)/97)*(int)player.getSalud() ;
+           renderer.getBatch().draw(blank, player.sprite.getX()-Gdx.graphics.getWidth()/3-40, player.sprite.getY()+Gdx.graphics.getHeight()/3-30,Gdx.graphics.getWidth()/4-14,80);
+           renderer.getBatch().draw(playerLife, player.sprite.getX()-Gdx.graphics.getWidth()/4-35, 5+player.sprite.getY()+Gdx.graphics.getHeight()/3+3,damageBar/2+4,7);
            options.setPosition((float) (player.getSprite().getX()+Gdx.graphics.getWidth()/3.3), (float) (player.getSprite().getY()+Gdx.graphics.getHeight()/3.3));
            options.draw(renderer.getBatch(), 20);
            playerBackPack.setPosition(player.getSprite().getX()+Gdx.graphics.getWidth()/4, (float) (player.getSprite().getY()+Gdx.graphics.getHeight()/3.3));
@@ -278,7 +269,22 @@ public class Room {
         }
 
     }
-    
+    public void renderGusanos(){
+        float oldXE,oldYE;
+
+        for(int i=0;i<Gusanos.length;i++){
+             if(Gusanos[i]!=null && Gusanos[i].isAlive()){
+            oldXE = Gusanos[i].getSprite().getX();
+            oldYE = Gusanos[i].getSprite().getY();
+            Gusanos[i].caminar();
+            actualiceEnemyX(oldXE,Gusanos[i]);
+            actualiceEnemyY(oldYE,Gusanos[i]);
+            Gusanos[i].addStateTime(Gdx.graphics.getDeltaTime());
+            Gusanos[i].animate(renderer.getBatch());
+            Gusanos[i].followPlayer(player.getSprite().getX(), player.getSprite().getY());
+             }
+        }
+    }
     public void dispose(){
         map.dispose();
         renderer.dispose();
@@ -344,7 +350,7 @@ public class Room {
         }
     }
     //Se revisan las colisiones del cocodrilo
-    private void actualiceEnemyY(float oldY,LinkedCroc enemy){
+    private void actualiceEnemyY(float oldY,Enemigo enemy){
         enemy.setCollitedY(false);
         if(oldY!=enemy.getSprite().getY()){
             enemy.setCollitedY(false);
@@ -413,7 +419,7 @@ public class Room {
         }
         
     }
-    private void actualiceEnemyX(float oldX, LinkedCroc enemy){
+    private void actualiceEnemyX(float oldX, Enemigo enemy){
         enemy.setCollitedX(false);
         if(oldX!=enemy.getSprite().getX()){
             if(enemy.getVelocidad().x<0){

@@ -185,15 +185,14 @@ public class Room {
         else if(this.pause==false && paused==true){
             this.pause=true;
         }
-        float oldX, oldY;
-        oldX = player.getSprite().getX();
-        oldY = player.getSprite().getY();
-        if(this.pause==false){
-            renderer.getBatch().setColor(Color.WHITE);
+        if(!this.pause){
+            
+            //renderer.getBatch().setColor(Color.BLACK);
             renderer.setView(camera);
             renderer.render();
+            
             renderer.getBatch().begin();
-             //Renderizamos a todos los cocodrilos
+            //Renderizamos a todos los cocodrilos
             renderCrocks();
             renderGusanos();
             //Render de interfaz
@@ -205,13 +204,20 @@ public class Room {
             playerBackPack.setPosition(player.getSprite().getX()+Gdx.graphics.getWidth()/4, (float) (player.getSprite().getY()+Gdx.graphics.getHeight()/3.3));
             playerBackPack.draw(renderer.getBatch(), 20);
 
+            float oldX, oldY;
+            oldX = player.getSprite().getX();
+            oldY = player.getSprite().getY();
             player.caminar();
             actualicePlayerX(oldX);
             actualicePlayerY(oldY);
+            
             DrawColeccionables();
+            
             player.animate(renderer.getBatch());
             player.addStateTime(Gdx.graphics.getDeltaTime()); 
+            
             renderer.getBatch().end();
+            
             boolean pressedScreen = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
             float delta = Gdx.graphics.getDeltaTime();
             //Comprobamos Estados del Juego
@@ -220,6 +226,7 @@ public class Room {
                 System.out.println("NOOOooooo te moriste");
                 Gdx.app.exit();
             }
+            stage.draw();
         }
         else{
             renderer.setView(camera);
@@ -237,25 +244,6 @@ public class Room {
             DrawColeccionables();
             renderer.getBatch().end();
         }
-        
-        renderer.getBatch().begin();
-        
-        player.caminar();
-        actualicePlayerX(oldX);
-        actualicePlayerY(oldY);
-        
-        DrawColeccionables();
-        
-        player.animate(renderer.getBatch());
-        player.addStateTime(Gdx.graphics.getDeltaTime());
-        
-        renderer.getBatch().end();
-        
-        boolean pressedScreen = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
-        float delta = Gdx.graphics.getDeltaTime();
-        player.perfoAtaqueDis(pressedScreen,delta,screen,stage);
-        
-        stage.draw();
           
     }
     //Se renderizan todos los Cocodrilos y en caso de que se haya terminado el cooldown del Cocodrilo padre se crea un nuevo cocodrilo en el primer if

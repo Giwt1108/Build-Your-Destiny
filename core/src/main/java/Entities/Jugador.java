@@ -76,16 +76,18 @@ public class Jugador extends Entidad implements InputProcessor{
     }
     
     public void animate(Batch batch){
-        
         if(this.attacking==true){
             batch.draw(animationAttack.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
-        }
-        if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedY()){
-            batch.draw(animationRest.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
+            System.out.println("Deberia estar atacando");
         }else{
-            batch.draw(animationWalk.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
-        }
-    
+            if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedY()){
+                batch.draw(animationRest.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
+                System.out.println("Deberia estar descansando");
+            }else{
+                batch.draw(animationWalk.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
+                System.out.println("Deberia estar caminando");
+            }
+        }   
     }
     
     private void startAnimation(){
@@ -100,7 +102,7 @@ public class Jugador extends Entidad implements InputProcessor{
         animationAttack = new Animation(0.15f,attack, Animation.PlayMode.LOOP);
         stateTime=0;
     }
-    
+
     public void mostrarBoton(Levels screen,TextButton button,Stage stage){
         screen.setButton(button);
         stage.addActor(screen.getButton());

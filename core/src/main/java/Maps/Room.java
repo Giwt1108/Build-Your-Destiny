@@ -188,7 +188,7 @@ public class Room {
         }
         if(!this.pause){
             
-            //renderer.getBatch().setColor(Color.BLACK);
+
             renderer.setView(camera);
             renderer.render();
             

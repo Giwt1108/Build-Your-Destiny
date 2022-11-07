@@ -4,44 +4,28 @@ format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 PPDescanso
-<<<<<<< HEAD
-  rotate: false
-=======
   rotate: true
->>>>>>> remotes/origin/Juan_V_1.0
   xy: 1, 1
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: 0
 PPDescanso
-<<<<<<< HEAD
-  rotate: false
-=======
   rotate: true
->>>>>>> remotes/origin/Juan_V_1.0
   xy: 1, 1
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: 3
 PPDescanso
-<<<<<<< HEAD
-  rotate: false
-=======
   rotate: true
->>>>>>> remotes/origin/Juan_V_1.0
   xy: 51, 1
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: 1
 PPDescanso
-<<<<<<< HEAD
-  rotate: false
-=======
   rotate: true
->>>>>>> remotes/origin/Juan_V_1.0
   xy: 101, 1
   size: 48, 48
   orig: 48, 48

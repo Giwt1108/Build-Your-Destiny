@@ -3,10 +3,45 @@ ui1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-button.Beauty
+Button
   rotate: false
   xy: 2, 2
+  size: 256, 129
+  orig: 256, 129
+  offset: 0, 0
+  index: -1
+Button.down
+  rotate: false
+  xy: 260, 2
+  size: 128, 129
+  orig: 128, 129
+  offset: 0, 0
+  index: -1
+Button.up
+  rotate: false
+  xy: 390, 2
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+button.Beauty
+  rotate: false
+  xy: 2, 133
   size: 115, 69
   orig: 115, 69
+  offset: 0, 0
+  index: -1
+lupaBusquedaHover
+  rotate: false
+  xy: 2, 204
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+lupaBusqueda
+  rotate: false
+  xy: 29, 204
+  size: 25, 25
+  orig: 25, 25
   offset: 0, 0
   index: -1

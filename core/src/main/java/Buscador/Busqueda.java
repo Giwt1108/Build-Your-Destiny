@@ -97,6 +97,16 @@ public class Busqueda {
         System.out.println("heaps size pos: " + n);
     }
 
+    //GETTERS AND SETTERS
+
+    public Heaps getResultados() {
+        return resultados;
+    }
+
+    public void setResultados(Heaps resultados) {
+        this.resultados = resultados;
+    }
+
 
 
 

@@ -1,6 +1,7 @@
 package Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -8,18 +9,25 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import org.w3c.dom.Text;
+
 import Buscador.Busqueda;
+import Buscador.ResultButton;
+import Buscador.Resultado;
 import Entities.Coleccionable;
+import estructuras.Heaps;
 import estructuras.ListaEnlazada;
 
 public class searchScreen implements Screen{
@@ -27,24 +35,47 @@ public class searchScreen implements Screen{
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
+    private Table table;
     private ImageButton searchButton;
     private TextField fieldSearch;
     private Busqueda busqueda;
 
-
+    //CONSTRUCTOR
     public searchScreen(){
         this.busqueda = new Busqueda();
     }
 
-    public void searchAction(ListaEnlazada coles){
+    //METODOS
+
+    //Me va a crear un boton con el icono para cada acoleccionable resulatdo de la busqueda y lo aniade al table
+    public void showResultsTable(Heaps heap, Skin skin,BitmapFont font){
+        int n = heap.getArray().size();
+        this.table.clear();
+        for(int i=0; i<n; i++){
+            Resultado<Coleccionable> res = (Resultado) heap.extractMax();
+            Coleccionable col = res.getObjeto();
+            ResultButton resButton = new ResultButton(col.getTexture(), col.toString(), skin, font);
+            this.table.add(resButton.getImgButton());
+            this.stage.addActor(resButton.getTxtButton());
+        }
+    }
+
+    public void searchAction(ListaEnlazada coles, Skin skin, BitmapFont font){
         String input = this.fieldSearch.getText();
+        System.out.println(input);
         busqueda.buscar(input,coles);
-        busqueda.showResults();
+        showResultsTable(busqueda.getResultados(), skin, font);
+        //busqueda.showResults();
 
     }
 
     @Override
     public void show() {
+
+        //Creamos el table donde se mostraran los resultados de la busqueda
+        this.table = new Table();
+        table.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         //Creamos la lista con los coleccionables
         ListaEnlazada<Coleccionable> coles = new ListaEnlazada();
         coles.pushBack(new Coleccionable(0,0,"espada"));
@@ -58,8 +89,9 @@ public class searchScreen implements Screen{
         Gdx.input.setInputProcessor(this.stage);
         this.atlas = new TextureAtlas("ui/button.pack");
         this.skin = new Skin(atlas);
+        BitmapFont font = new BitmapFont(Gdx.files.internal("Font/ButtonAtackWhite.fnt"), false);
 
-        //Creamos el boton de busqeuda y le ponemos estilo
+        //Creamos el boton de busqueda y le ponemos estilo
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
         style.up = skin.getDrawable("lupaBusqueda");
         style.over = skin.getDrawable("lupaBusquedaHover");
@@ -71,12 +103,12 @@ public class searchScreen implements Screen{
                 new ClickListener() {
                     @Override
                     public void clicked(InputEvent e, float x, float y) {
-                        searchAction(coles);
+                        searchAction(coles, skin, font);
 
                     }
                 });
 
-        BitmapFont font = new BitmapFont(Gdx.files.internal("Font/ButtonAtackWhite.fnt"), false);
+
 
         //Style para un label para el textfield
 
@@ -107,7 +139,42 @@ public class searchScreen implements Screen{
         this.fieldSearch.setMessageText("Búsqueda");
         this.fieldSearch.setSize(400, this.searchButton.getHeight());
         this.fieldSearch.setPosition(Gdx.graphics.getWidth() - (2*this.searchButton.getWidth() + fieldSearch.getWidth()), this.searchButton.getHeight());
+        this.fieldSearch.setTextFieldListener(
+            new TextField.TextFieldListener() {
+                @Override
+                public void keyTyped(TextField textField, char key) {
+                    if ((key == '\r' || key == '\n')){
+                        searchAction(coles, skin, font);
+                    }
+                }
+            });
 
+
+
+
+        /*
+        Coleccionable prueba = coles.getAt(0);
+        ResultButton resultButton = new ResultButton(prueba.getTexture(), prueba.toString(), skin, font);
+        ImageButton imgButton = resultButton.getImgButton();
+        TextButton txtButton = resultButton.getTxtButton();
+        imgButton.setPosition(180,180);
+        imgButton.addListener(
+            new ClickListener(){
+              @Override
+              public void enter(InputEvent e, float x, float y, int pointer, Actor fromActor){
+                  txtButton.setPosition(x,y);
+                  txtButton.setVisible(true);
+              }
+              @Override
+              public void exit(InputEvent e, float x, float y, int pointer, Actor fromActor){
+                  txtButton.setVisible(false);
+              }
+        });
+
+        this.stage.addActor(imgButton);
+        this.stage.addActor(txtButton);
+        */
+        this.stage.addActor(table);
         this.stage.addActor(this.fieldSearch);
         this.stage.addActor(this.searchButton);
     }
@@ -117,7 +184,9 @@ public class searchScreen implements Screen{
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         this.stage.act(delta);
+        this.stage.addActor(this.table);
         this.stage.draw();
+
     }
 
     @Override

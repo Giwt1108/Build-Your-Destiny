@@ -24,30 +24,37 @@ Button.up
   orig: 128, 128
   offset: 0, 0
   index: -1
-button.Beauty
+cuadroDescripcion
   rotate: false
   xy: 2, 133
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+button.Beauty
+  rotate: false
+  xy: 124, 133
   size: 115, 69
   orig: 115, 69
   offset: 0, 0
   index: -1
 fieldSearch
   rotate: false
-  xy: 2, 204
+  xy: 124, 204
   size: 80, 25
   orig: 80, 25
   offset: 0, 0
   index: -1
 lupaBusquedaHover
   rotate: false
-  xy: 84, 204
+  xy: 206, 204
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 lupaBusqueda
   rotate: false
-  xy: 119, 133
+  xy: 233, 204
   size: 25, 25
   orig: 25, 25
   offset: 0, 0

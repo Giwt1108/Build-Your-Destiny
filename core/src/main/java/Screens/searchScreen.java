@@ -18,6 +18,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import Buscador.Busqueda;
+import Entities.Coleccionable;
+import estructuras.ListaEnlazada;
+
 public class searchScreen implements Screen{
 
     private Stage stage;
@@ -25,16 +29,37 @@ public class searchScreen implements Screen{
     private Skin skin;
     private ImageButton searchButton;
     private TextField fieldSearch;
+    private Busqueda busqueda;
 
 
+    public searchScreen(){
+        this.busqueda = new Busqueda();
+    }
+
+    public void searchAction(ListaEnlazada coles){
+        String input = this.fieldSearch.getText();
+        busqueda.buscar(input,coles);
+        busqueda.showResults();
+
+    }
 
     @Override
     public void show() {
+        //Creamos la lista con los coleccionables
+        ListaEnlazada<Coleccionable> coles = new ListaEnlazada();
+        coles.pushBack(new Coleccionable(0,0,"espada"));
+        coles.pushBack(new Coleccionable(0,0,"moneda"));
+        coles.pushBack(new Coleccionable(0,0,"alada"));
+        coles.pushBack(new Coleccionable(0,0,"posion"));
+        coles.pushBack(new Coleccionable(0,0,"municion"));
+
+
         this.stage = new Stage();
         Gdx.input.setInputProcessor(this.stage);
         this.atlas = new TextureAtlas("ui/button.pack");
         this.skin = new Skin(atlas);
 
+        //Creamos el boton de busqeuda y le ponemos estilo
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
         style.up = skin.getDrawable("lupaBusqueda");
         style.over = skin.getDrawable("lupaBusquedaHover");
@@ -45,8 +70,8 @@ public class searchScreen implements Screen{
         this.searchButton.addListener(
                 new ClickListener() {
                     @Override
-                    public void touchUp(InputEvent e, float x, float y, int point, int button) {
-
+                    public void clicked(InputEvent e, float x, float y) {
+                        searchAction(coles);
 
                     }
                 });

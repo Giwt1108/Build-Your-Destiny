@@ -12,6 +12,7 @@ import estructuras.ListaEnlazada;
 
 public class Coleccionable {
     //crafteo
+    private String nombre;
     private Texture texture;
     private Rectangle rectangle;
     private boolean visible;
@@ -19,8 +20,9 @@ public class Coleccionable {
 
 
     //CONSTRUCTOR
-    public Coleccionable(float x, float y){
+    public Coleccionable(float x, float y, String nombre){
         this(new Texture(Gdx.files.internal("Images/Coleccionables/coin.png")),x,y);
+        this.nombre = nombre;
     }
 
     public Coleccionable(Texture texture , float x, float y){
@@ -68,10 +70,23 @@ public class Coleccionable {
             
     }
 
+    @Override
+    public String toString(){
+        String cad = this.nombre;
+        return cad;
+    }
 
 
     //GETTERS AND SETTERS
 
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
     public Texture getTexture() {
         return texture;

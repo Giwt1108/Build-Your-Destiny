@@ -31,16 +31,23 @@ button.Beauty
   orig: 115, 69
   offset: 0, 0
   index: -1
-lupaBusquedaHover
+fieldSearch
   rotate: false
   xy: 2, 204
+  size: 80, 25
+  orig: 80, 25
+  offset: 0, 0
+  index: -1
+lupaBusquedaHover
+  rotate: false
+  xy: 84, 204
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 lupaBusqueda
   rotate: false
-  xy: 29, 204
+  xy: 119, 133
   size: 25, 25
   orig: 25, 25
   offset: 0, 0

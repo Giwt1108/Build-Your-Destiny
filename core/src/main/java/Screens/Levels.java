@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import estructuras.DoubleLinkedList;
 import estructuras.DoubleNode;
+import java.util.concurrent.ThreadLocalRandom;
 
 import Maps.TmxGestor;
 
@@ -44,11 +45,14 @@ public class Levels implements Screen {
     protected InputMultiplexer inputMultiplexer = new InputMultiplexer();
     
     private TmxGestor mapGestor;
+    private int row = ThreadLocalRandom.current().nextInt(4, 6);
+    private int col = ThreadLocalRandom.current().nextInt(4, 6);
     
     @Override
     public void show() { 
         
-        mapGestor = new TmxGestor(1,5,4);
+        
+        mapGestor = new TmxGestor(1,row,col);
         mapGestor.writeTmx();
         
         camera = new OrthographicCamera(); 
@@ -136,7 +140,7 @@ public class Levels implements Screen {
         float x,y;
         
         x = mapGestor.getInitPoint()[1]*32*32+512;
-        y = (5-mapGestor.getInitPoint()[0])*32*32+512;
+        y = (row-mapGestor.getInitPoint()[0])*32*32-512;
         
         player.setX(x);   //Aqui lo estamos centrando horizontalmente
         player.setY(y); //Lo dejamos 20 pixeles sobre el borde

@@ -55,7 +55,14 @@ public class searchScreen implements Screen{
             Resultado<Coleccionable> res = (Resultado) heap.extractMax();
             Coleccionable col = res.getObjeto();
             ResultButton resButton = new ResultButton(col.getTexture(), col.toString(), skin, font);
-            this.table.add(resButton.getImgButton());
+            if(i%3 == 0 && i!=0) { // cada 3 items una nueva fila
+                System.out.println(i);
+                this.table.row();
+            }
+            this.table.add(resButton.getImgButton()).size(85,85);
+
+
+
             this.stage.addActor(resButton.getTxtButton());
         }
     }
@@ -74,8 +81,8 @@ public class searchScreen implements Screen{
 
         //Creamos el table donde se mostraran los resultados de la busqueda
         this.table = new Table();
-        table.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
+        table.setBounds(Gdx.graphics.getWidth()/2,0, Gdx.graphics.getWidth()/2 , Gdx.graphics.getHeight());
+        //table.setBounds(0,0, Gdx.graphics.getWidth()/2 , Gdx.graphics.getHeight());
         //Creamos la lista con los coleccionables
         ListaEnlazada<Coleccionable> coles = new ListaEnlazada();
         coles.pushBack(new Coleccionable(0,0,"espada"));

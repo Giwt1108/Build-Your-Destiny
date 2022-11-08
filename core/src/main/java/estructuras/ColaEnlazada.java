@@ -10,7 +10,8 @@ public class ColaEnlazada<T> {
     }
 
 
-    public void Encolar(Node element){
+    public void Encolar(T el){
+        Node element = new Node(el);
         if(!empty()){
             this.rear.setNext(element); //Seteamos a que apunte a este nuevo elemento
             this.rear = element; //Hacemos que ahora la referencia vaya a este nuevo elemento para que ahora sea el nuevo rear

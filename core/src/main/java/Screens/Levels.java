@@ -22,6 +22,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import estructuras.DoubleLinkedList;
 import estructuras.DoubleNode;
+import java.util.concurrent.ThreadLocalRandom;
+
+import Maps.TmxGestor;
 
 /**
  *
@@ -39,10 +42,19 @@ public class Levels implements Screen {
     private Stage stage;
     private TextButton button;
     private DoubleLinkedList<Coleccionable>  coleccionables;
-    private InputMultiplexer inputMultiplexer = new InputMultiplexer();
+    protected InputMultiplexer inputMultiplexer = new InputMultiplexer();
+    
+    private TmxGestor mapGestor;
+    private int row = ThreadLocalRandom.current().nextInt(4, 6);
+    private int col = ThreadLocalRandom.current().nextInt(4, 6);
     
     @Override
     public void show() { 
+        
+        
+        mapGestor = new TmxGestor(1,row,col);
+        mapGestor.writeTmx();
+        
         camera = new OrthographicCamera(); 
 
         stage = new Stage();
@@ -53,8 +65,11 @@ public class Levels implements Screen {
         inputMultiplexer.addProcessor(player);
         Gdx.input.setInputProcessor(inputMultiplexer);
         
-        room = new Room("Maps/Room1.tmx", player, enemy,coleccionables);
+        room = new Room("Maps/level1.tmx", player, enemy,coleccionables);
+
         renderer = room.getRenderer();
+        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+
     }
 
     @Override
@@ -65,9 +80,7 @@ public class Levels implements Screen {
         camera.position.set(room.getPlayer().getSprite().getX()+room.getPlayer().getSprite().getWidth()/2,room.getPlayer().getSprite().getY()+room.getPlayer().getSprite().getHeight()/2,0);
         camera.update();
         
-
         room.render(camera,stage,this);
-    
     }
 
     @Override
@@ -124,22 +137,27 @@ public class Levels implements Screen {
         player.setSprite(new Sprite(new Texture(Gdx.files.internal("Images/Player/PersonajePrincipal.png"))));
 
         //Ponemos el rectangulo para nuestro player
-        player.setX(800 / 2 - 64 / 2);   //Aqui lo estamos centrando horizontalmente
-        player.setY(480/2 - 64/2); //Lo dejamos 20 pixeles sobre el borde
+        float x,y;
+        
+        x = mapGestor.getInitPoint()[1]*32*32+512;
+        y = (row-mapGestor.getInitPoint()[0])*32*32-512;
+        
+        player.setX(x);   //Aqui lo estamos centrando horizontalmente
+        player.setY(y); //Lo dejamos 20 pixeles sobre el borde
         player.setRegionWidth( 32);
         player.setRegionHeight(32);
-        player.getSprite().setX(800 / 2 - 64 / 2);   //Aqui lo estamos centrando horizontalmente
-        player.getSprite().setY(480/2 - 64/2); //Lo dejamos 20 pixeles sobre el borde
+        player.getSprite().setX(x);   //Aqui lo estamos centrando horizontalmente
+        player.getSprite().setY(y); //Lo dejamos 20 pixeles sobre el borde
         player.getSprite().setRegionWidth( 32);
         player.getSprite().setRegionHeight(32);
     }
     public void initEnemy(){
-        // PONEMOS LA IMAGEN/SKIN DEL JUGADOR
+        // skin del primer croco
         enemy = new LinkedCroc();
         enemy.setSpeed(enemy.getSpeed()); //le damos una velocidad inicial arbitraria
         enemy.setSprite(new Sprite(new Texture(Gdx.files.internal("Images/Cocodrile/enemiCocodrile.png"))));
         
-        //Ponemos el rectangulo para nuestro player
+        //Rectangulo del primer croco
         enemy.setX(1000 / 2 - 128 / 2);   //Aqui lo estamos centrando horizontalmente
         enemy.sprite.setX(1000 / 2 - 128 / 2);   //Aqui lo estamos centrando horizontalmente
         enemy.setY(680/2 - 128/2); //Lo dejamos 20 pixeles sobre el borde

@@ -51,6 +51,11 @@ public class Coleccionable {
         return bandera;
         //System.out.println("Se ejecuta");
     }
+
+    public int tamanoCollecionable(ListaEnlazada coleccionables){
+        int length = coleccionables.size();
+        return length;
+    }
     
     public DoubleNode draw(Batch batch, Jugador jugador){
         //batch.draw(coleccionable.getTexture(), Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
@@ -62,6 +67,7 @@ public class Coleccionable {
         }
             
     }
+
 
 
     //GETTERS AND SETTERS

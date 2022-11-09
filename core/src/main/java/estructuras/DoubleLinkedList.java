@@ -71,7 +71,7 @@ public class DoubleLinkedList<T> {
             this.tail = this.tail.getNext();
         }
     }
-    
+    //Holis
     public T topBack(){
         if(!this.isEmpty()){
             return this.tail.getData();

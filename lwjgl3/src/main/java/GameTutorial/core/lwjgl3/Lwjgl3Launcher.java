@@ -1,6 +1,7 @@
 package GameTutorial.core.lwjgl3;
 
 import BuildYourDestiny.Game.MainGame;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
@@ -18,6 +19,7 @@ public class Lwjgl3Launcher {
 	private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
 		Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
 		configuration.setTitle("Build Your Destiny");
+                                configuration.setWindowIcon("Images/AppIcon.jpg");
 		configuration.useVsync(true);
 		//// Limits FPS to the refresh rate of the currently active monitor.
 		configuration.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate);

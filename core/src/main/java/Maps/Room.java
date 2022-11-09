@@ -8,7 +8,9 @@ import Entities.AtaqueCorto;
 import Entities.Coleccionable;
 import Entities.Enemies.Enemigo;
 import Entities.Enemies.LinkedCroc;
+import Entities.Enemies.Proyectil;
 import Entities.Enemies.QueueGusanin;
+import Entities.Enemies.cainBoss;
 import Entities.Jugador;
 import Screens.Levels;
 import com.badlogic.gdx.Gdx;
@@ -76,6 +78,9 @@ public class Room {
     private boolean fullScreen=true;
     
     private int amountOfCrocos=0;
+    private int CrocsKilled=0;
+    private int GusanosKilled=0;
+    private cainBoss jefeOne= new cainBoss();
     private LinkedCroc [] Crocos= new LinkedCroc[20];
     private QueueGusanin[] Gusanos= new QueueGusanin[50];
     private DoubleLinkedList<Coleccionable> coleccionables;
@@ -111,12 +116,25 @@ public class Room {
 
         //Iniciamos primeros Enemigos
         this.Crocos[0]= enemy;
-        this.Gusanos[0]=new QueueGusanin();
+        
         amountOfCrocos++;
         Crocos[0].sprite.setX(player.sprite.getX()+10);
         Crocos[0].sprite.setY(player.sprite.getY()+10);
-        Gusanos[0].sprite.setX(player.sprite.getX()+10);
-        Gusanos[0].sprite.setY(player.sprite.getY()-10);
+        jefeOne.sprite.setX(player.sprite.getX()+10);
+        jefeOne.sprite.setY(player.sprite.getY()+10);
+        int position;
+        for(int i=0;i<20;i++){
+            this.Gusanos[i]=new QueueGusanin();
+            if(i==0){
+                position=10;
+            }
+            else{
+                position=10*i;
+            }
+            Gusanos[i].sprite.setX(player.sprite.getX()+position);
+            Gusanos[i].sprite.setY(player.sprite.getY()-position);
+        }
+       
         
         scaleX = ((float) collisionLayer.getWidth())/collisionLayer.getTileWidth();
         scaleY = ((float) collisionLayer.getHeight())/collisionLayer.getTileHeight();
@@ -196,6 +214,7 @@ public class Room {
             //Renderizamos a todos los cocodrilos
             renderCrocks();
             renderGusanos();
+            renderJefe();
             //Render de interfaz
             int damageBar=((Gdx.graphics.getWidth()/4)/97)*(int)player.getSalud() ;
             renderer.getBatch().draw(blank, player.sprite.getX()-Gdx.graphics.getWidth()/3-40, player.sprite.getY()+Gdx.graphics.getHeight()/3-30,Gdx.graphics.getWidth()/4-14,80);
@@ -235,9 +254,9 @@ public class Room {
             renderer.render();
             renderer.getBatch().begin();
            //Render de interfaz
-            int damageBar=((Gdx.graphics.getWidth()/4)/100)*(int)player.getSalud() ;
-            renderer.getBatch().draw(blank, player.sprite.getX()-Gdx.graphics.getWidth()/3, player.sprite.getY()+Gdx.graphics.getHeight()/3,Gdx.graphics.getWidth()/4,20);
-            renderer.getBatch().draw(playerLife, player.sprite.getX()-Gdx.graphics.getWidth()/3, 5+player.sprite.getY()+Gdx.graphics.getHeight()/3,damageBar,10);
+            int damageBar=((Gdx.graphics.getWidth()/4)/97)*(int)player.getSalud() ;
+            renderer.getBatch().draw(blank, player.sprite.getX()-Gdx.graphics.getWidth()/3-40, player.sprite.getY()+Gdx.graphics.getHeight()/3-30,Gdx.graphics.getWidth()/4-14,80);
+            renderer.getBatch().draw(playerLife, player.sprite.getX()-Gdx.graphics.getWidth()/4-35, 5+player.sprite.getY()+Gdx.graphics.getHeight()/3+3,damageBar/2+4,7);
             options.setPosition((float) (player.getSprite().getX()+Gdx.graphics.getWidth()/3.3), (float) (player.getSprite().getY()+Gdx.graphics.getHeight()/3.3));
             options.draw(renderer.getBatch(), 20);
             playerBackPack.setPosition(player.getSprite().getX()+Gdx.graphics.getWidth()/4, (float) (player.getSprite().getY()+Gdx.graphics.getHeight()/3.3));
@@ -279,6 +298,8 @@ public class Room {
         float oldXE,oldYE;
 
         for(int i=0;i<Gusanos.length;i++){
+             AtaqueCorto atk= new AtaqueCorto(); 
+             atk.ataqueCorto(player, Gusanos[i]);
              if(Gusanos[i]!=null && Gusanos[i].isAlive()){
             oldXE = Gusanos[i].getSprite().getX();
             oldYE = Gusanos[i].getSprite().getY();
@@ -287,9 +308,39 @@ public class Room {
             actualiceEnemyY(oldYE,Gusanos[i]);
             Gusanos[i].addStateTime(Gdx.graphics.getDeltaTime());
             Gusanos[i].animate(renderer.getBatch());
-            Gusanos[i].followPlayer(player.getSprite().getX(), player.getSprite().getY());
+            Proyectil [] gusProyect= Gusanos[i].getProyectiles();
+            for(int j=0;j<=Gusanos[i].getProyectilesCount();j++){
+                if(gusProyect[j]!=null){
+                    if(gusProyect[j].getStateTime()<=1){
+                        gusProyect[j].sprite.setX(Gusanos[i].sprite.getX());
+                        gusProyect[j].sprite.setY(Gusanos[i].sprite.getY());
+                    }
+                    
+                    oldXE = gusProyect[j].getSprite().getX();
+                    oldYE = gusProyect[j].getSprite().getY();
+                    gusProyect[j].caminar();
+                    actualiceEnemyX(oldXE,gusProyect[j]);
+                    actualiceEnemyY(oldYE,gusProyect[j]);
+                    gusProyect[j].addStateTime(Gdx.graphics.getDeltaTime());
+                    gusProyect[j].animate(renderer.getBatch());
+                    player.underAttack(gusProyect[j].followPlayer(player.getSprite().getX(), player.getSprite().getY(),true),0.01f);
+                }  
+            }
+            Gusanos[i].playerNear(player.getSprite().getX(), player.getSprite().getY());
              }
         }
+    }
+    
+    public void renderJefe(){
+            float oldXE,oldYE;
+            oldXE = jefeOne.getSprite().getX();
+            oldYE = jefeOne.getSprite().getY();
+            jefeOne.caminar();
+            actualiceEnemyX(oldXE,jefeOne);
+            actualiceEnemyY(oldYE,jefeOne);
+            jefeOne.addStateTime(Gdx.graphics.getDeltaTime());
+            jefeOne.animate(renderer.getBatch());
+            player.underAttack(jefeOne.playerNear(player.sprite.getX(), player.sprite.getY()),0.1f);
     }
     public void dispose(){
         map.dispose();

@@ -1,0 +1,90 @@
+
+cain.png
+size: 127, 148
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Cain-Caminando
+  rotate: false
+  xy: 44, 50
+  size: 39, 48
+  orig: 48, 48
+  offset: 3, 0
+  index: 0
+Cain-Caminando
+  rotate: false
+  xy: 44, 50
+  size: 39, 48
+  orig: 48, 48
+  offset: 3, 0
+  index: 2
+Cain-Descanso
+  rotate: false
+  xy: 44, 50
+  size: 39, 48
+  orig: 48, 48
+  offset: 3, 0
+  index: 3
+Cain-Descanso
+  rotate: false
+  xy: 44, 50
+  size: 39, 48
+  orig: 48, 48
+  offset: 3, 0
+  index: 0
+Cain-Caminando
+  rotate: false
+  xy: 88, 101
+  size: 39, 47
+  orig: 48, 48
+  offset: 3, 0
+  index: 1
+Cain-Caminando
+  rotate: false
+  xy: 85, 51
+  size: 39, 47
+  orig: 48, 48
+  offset: 3, 0
+  index: 3
+Cain-Descanso
+  rotate: false
+  xy: 41, 1
+  size: 39, 47
+  orig: 48, 48
+  offset: 3, 0
+  index: 2
+Cain-Descanso
+  rotate: false
+  xy: 82, 1
+  size: 39, 47
+  orig: 48, 48
+  offset: 3, 0
+  index: 1
+Cain-ataque
+  rotate: false
+  xy: 0, 100
+  size: 42, 48
+  orig: 48, 48
+  offset: 3, 0
+  index: 1
+Cain-ataque
+  rotate: false
+  xy: 0, 50
+  size: 42, 48
+  orig: 48, 48
+  offset: 3, 0
+  index: 3
+Cain-ataque
+  rotate: false
+  xy: 44, 100
+  size: 42, 48
+  orig: 48, 48
+  offset: 3, 0
+  index: 2
+Cain-ataque
+  rotate: false
+  xy: 0, 0
+  size: 39, 48
+  orig: 48, 48
+  offset: 3, 0
+  index: 0

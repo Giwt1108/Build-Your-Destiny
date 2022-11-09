@@ -67,6 +67,10 @@ public class Enemigo extends Entidad{
             this.setVelocidadY(-this.getSpeed()+50);
             this.setVelocidadX(0);
         }
+        else{
+            this.setVelocidadY(0);
+            this.setVelocidadX(0);
+        }
     }
      public void caminar(){
 

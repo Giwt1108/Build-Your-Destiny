@@ -1,0 +1,41 @@
+
+BolaSeda.png
+size: 104, 46
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+BolaSeda
+  rotate: false
+  xy: 0, 0
+  size: 18, 11
+  orig: 48, 48
+  offset: 13, 18
+  index: -1
+BolaSeda
+  rotate: false
+  xy: 74, 28
+  size: 30, 18
+  orig: 48, 48
+  offset: 9, 17
+  index: -1
+BolaSeda
+  rotate: false
+  xy: 74, 9
+  size: 29, 17
+  orig: 48, 48
+  offset: 8, 4
+  index: -1
+BolaSedaSplit
+  rotate: false
+  xy: 0, 13
+  size: 35, 33
+  orig: 48, 48
+  offset: 7, 4
+  index: -1
+BolaSedaSplit
+  rotate: false
+  xy: 37, 13
+  size: 35, 33
+  orig: 48, 48
+  offset: 4, 4
+  index: -1

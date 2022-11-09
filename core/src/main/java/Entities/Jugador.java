@@ -136,6 +136,14 @@ public class Jugador extends Entidad implements InputProcessor{
     }
     public void addStateTime(float delta){
         stateTime += delta;
+        if(this.CoolDownAttack-1.5<stateTime){
+            this.attacking=false;
+        }
+        if(this.CoolDownDash-6<stateTime){
+            this.multiplicador=1;
+            this.CoolDownDash=0;
+        }
+        
     }
     
     //Esta funcion nos deja saber si el jugador esta siendo atacado o no
@@ -156,23 +164,16 @@ public class Jugador extends Entidad implements InputProcessor{
         return this.attacking;}
     
     public void attack(){
-
-        if(System.currentTimeMillis()>CoolDownAttack){
+        if(this.stateTime>CoolDownAttack){
             this.canAttack=true;
-            
         }
         if(this.canAttack==true){
-            this.CoolDownAttack=System.currentTimeMillis()+1000;
+            this.CoolDownAttack=this.stateTime+2;
             this.attacking=true;
             this.canAttack=false;
         }           
-        System.out.println((this.CoolDownAttack+1000)-this.CoolDownAttack);
     }
-      public void dash(){
-          this.multiplicador=2;
-          this.dashing=true;
-          this.canDash=false;
-    }
+   
     
     //HAY QUE CORREGIR LOS CONSTRUCTORES PONIENDO EL TIPO DE DATO CORRECTO
     public Jugador(ListaEnlazada<Coleccionable> coleccionables, int misiones, int velocidad, int estamina, int alcance, int suerte, int velocidadAtaque, int ataque, int salud, Habilidad habilidad) {
@@ -204,48 +205,20 @@ public class Jugador extends Entidad implements InputProcessor{
         @Override
     public boolean keyDown(int keycode) {
         switch(keycode){
-            //Shift para dar un Dash que se implementara mas tarde xd
-            case Input.Keys.SHIFT_LEFT:
-               dash();
-                break;
             case Input.Keys.E:
                 attack();
-                break;
-            case Input.Keys.W:
-               if (!isCollitedY()){
-                    setVelocidadY(getSpeed()*multiplicador);
-                }
-                break;
-            case Input.Keys.A:
-                if(!isCollitedX()){
-                    setVelocidadX(-getSpeed()*multiplicador);
-                }
-                sprite.flip(true, false);
-                break;
-            case Input.Keys.S:
-                if(!isCollitedY()){
-                    setVelocidadY(-getSpeed()*multiplicador);
-                }
-                break;
-            case Input.Keys.D:
-                if(!isCollitedX()){
-                    setVelocidadX(getSpeed()*multiplicador);
-                }
-                sprite.flip(true, false);
                 break;
         }        
         return true;
     }
+    
 
     @Override
     public boolean keyUp(int keycode) {
         switch(keycode){
             case Input.Keys.SHIFT_LEFT:
-                this.dashing=false;
-                this.multiplicador=1;
                 break;
             case Input.Keys.E:
-                this.attacking=false;
                 break;
             case Input.Keys.W:
                 setVelocidadY(0);
@@ -264,6 +237,37 @@ public class Jugador extends Entidad implements InputProcessor{
 
     @Override
     public boolean keyTyped(char c) {
+        switch(c){
+            
+            case 'w':
+               if (!isCollitedY()){
+                    setVelocidadY(getSpeed()*multiplicador);
+                }
+                break;
+            case 'a':
+                if(!isCollitedX()){
+                    setVelocidadX(-getSpeed()*multiplicador);
+                }
+                sprite.flip(true, false);
+                break;
+            case 's':
+                if(!isCollitedY()){
+                    setVelocidadY(-getSpeed()*multiplicador);
+                }
+                break;
+            case 'd':
+                if(!isCollitedX()){
+                    setVelocidadX(getSpeed()*multiplicador);
+                }
+                sprite.flip(true, false);
+                break;
+            case ' ':
+                if(this.CoolDownDash==0){
+                    this.multiplicador=this.multiplicador*2;
+                    this.dashing=true;
+                    this.CoolDownDash=this.stateTime+7;
+                }
+        }
         return false;
     }
 

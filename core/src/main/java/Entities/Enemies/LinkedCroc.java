@@ -24,13 +24,17 @@ public class LinkedCroc extends Enemigo{
     
     public LinkedCroc(){
         //Estamina, alcance, suerte, velocidadAtaque, ataque, salud, sprite
-        super(100,30,100,5,10,30,new Sprite());
+        super(100,10,100,5,20,30,new Sprite());
         this.atlas=new TextureAtlas("Images/Cocodrile/Croc.atlas");
         if(sons==0){
             this.father=true;
             this.canHaveChildren=true;
         }
-        sons++;
+        else{
+            this.father=false;
+            this.canHaveChildren=false;
+            sons++;
+        }
         startAnimation();
     }
     
@@ -74,6 +78,19 @@ public class LinkedCroc extends Enemigo{
         if(isCollitedX()){
             this.setVelocidadY(speed+200);
         }
+    }
+    public void removeChild(){
+        sons--;
+    }
+
+    public boolean canGetDamage(){
+        if(this.father!=true){
+            return true;
+        }
+        if(sons<=0){
+            return true;
+        }
+        return false;
     }
     
      public void resetAttack(){

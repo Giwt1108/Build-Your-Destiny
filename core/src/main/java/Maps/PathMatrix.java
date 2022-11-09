@@ -7,6 +7,8 @@ package Maps;
 import estructuras.Nodes;
 import estructuras.DoubleLinkedList;
 import Maps.PathTree;
+
+import java.nio.file.Path;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,6 +21,7 @@ public class PathMatrix<T> {
     public int rows;
     public int cols;
     public List<List<Nodes<Integer[]>>> matrix;
+
     
     public PathMatrix(int rows, int cols){
         this.rows = rows;
@@ -126,4 +129,6 @@ public class PathMatrix<T> {
             }
         }
     }
+
+
 }

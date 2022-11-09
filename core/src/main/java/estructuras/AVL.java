@@ -116,7 +116,7 @@ public class AVL<T extends Comparable<T>> extends Tree<T> {
             return new NodeTree(key);
         }
         else {
-            if( key.compareTo( (T) root.getKey() ) <0){
+            if( key.compareTo( (T) root.getKey() ) < 0){
                 root.setLeft(  insertAVL(root.getLeft(),  key)  );
             }
             else if(key.compareTo( (T) root.getKey() ) >0){

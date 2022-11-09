@@ -11,7 +11,7 @@ public class PilaEnlazada <T>{
         return false;
     }
 
-    public void push(int value){
+    public void push(T value){
         Node aux = new Node(value);
         aux.setNext(this.top);
         this.top = aux;

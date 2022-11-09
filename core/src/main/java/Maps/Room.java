@@ -90,6 +90,7 @@ public class Room {
     
     private final float width;
     private final float height;
+
     
     public Room(String fileName, Jugador player, LinkedCroc enemy, DoubleLinkedList<Coleccionable> coleccionables){
         map = new TmxMapLoader().load(fileName);

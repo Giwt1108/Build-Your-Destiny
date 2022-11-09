@@ -169,7 +169,7 @@ public class Levels implements Screen {
     public void initColeccionables(int num){
         coleccionables = new DoubleLinkedList<Coleccionable>();
         for(int i =0;i<num;i++){
-            DoubleNode<Coleccionable> node = new DoubleNode<Coleccionable>(new Coleccionable(30+i*50,30+i*50));
+            DoubleNode<Coleccionable> node = new DoubleNode<Coleccionable>(new Coleccionable(30+i*50,30+i*50, "moneda"));
             node.getData().setNode(node);
             node.getData().setVisible(true);
             coleccionables.pushBackNode(node);

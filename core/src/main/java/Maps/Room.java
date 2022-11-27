@@ -76,6 +76,7 @@ public class Room {
     private long CoolDownDash=System.currentTimeMillis()+5000;
     private boolean pause=false;
     private boolean fullScreen=true;
+    private boolean bosstime=false;
     
     private int amountOfCrocos=0;
     private int CrocsKilled=0;
@@ -134,6 +135,18 @@ public class Room {
             }
             Gusanos[i].sprite.setX(player.sprite.getX()+position);
             Gusanos[i].sprite.setY(player.sprite.getY()-position);
+        }
+        for(int i=1;i<20;i++){
+            this.Crocos[i]=new LinkedCroc();
+            if(i==1){
+                position=10;
+            }
+            else{
+                position=10*i;
+            }
+            Crocos[i].sprite.setX(player.sprite.getX()+position);
+            Crocos[i].sprite.setY(player.sprite.getY()-position);
+            amountOfCrocos++;
         }
        
         
@@ -208,14 +221,35 @@ public class Room {
         if(!this.pause){
             
 
+            if(bosstime==false && CrocsKilled>20 || GusanosKilled>20 && bosstime==false){
+                renderer.getBatch().setColor(Color.SCARLET);
+                music.pause();
+
+                Music musik= Gdx.audio.newMusic(Gdx.files.internal("Music/turbio.mp3"));
+                
+                musik.setLooping(full);
+                musik.setVolume(0.8f);
+                musik.play();
+                bosstime=true;
+            }
+            if( CrocsKilled>20 || GusanosKilled>20 ){
+                renderer.getBatch().setColor(Color.SCARLET);   
+            }
             renderer.setView(camera);
+
             renderer.render();
             
+           
             renderer.getBatch().begin();
             //Renderizamos a todos los cocodrilos
+            
             renderCrocks();
             renderGusanos();
-            renderJefe();
+            if(CrocsKilled>20 || GusanosKilled>20){
+                
+                renderJefe();
+                
+            }
             //Render de interfaz
             int damageBar=((Gdx.graphics.getWidth()/4)/97)*(int)player.getSalud() ;
             renderer.getBatch().draw(blank, player.sprite.getX()-Gdx.graphics.getWidth()/3-40, player.sprite.getY()+Gdx.graphics.getHeight()/3-30,Gdx.graphics.getWidth()/4-14,80);
@@ -280,7 +314,9 @@ public class Room {
             }
         for(int i=0;i<amountOfCrocos;i++){
             AtaqueCorto atk= new AtaqueCorto(); 
-             atk.ataqueCorto(player, Crocos[i]);
+             if(atk.ataqueCorto(player, Crocos[i])==true){
+                 CrocsKilled++;
+             };
              if(Crocos[i].isAlive()){
             oldXE = Crocos[i].getSprite().getX();
             oldYE = Crocos[i].getSprite().getY();
@@ -300,23 +336,27 @@ public class Room {
 
         for(int i=0;i<Gusanos.length;i++){
              AtaqueCorto atk= new AtaqueCorto(); 
-             atk.ataqueCorto(player, Gusanos[i]);
+             if(Gusanos[i]!=null){
+                 if(atk.ataqueCorto(player, Gusanos[i])==true){
+                     GusanosKilled++;
+                 }
+             }
+             
              if(Gusanos[i]!=null && Gusanos[i].isAlive()){
-            oldXE = Gusanos[i].getSprite().getX();
-            oldYE = Gusanos[i].getSprite().getY();
-            Gusanos[i].caminar();
-            actualiceEnemyX(oldXE,Gusanos[i]);
-            actualiceEnemyY(oldYE,Gusanos[i]);
-            Gusanos[i].addStateTime(Gdx.graphics.getDeltaTime());
-            Gusanos[i].animate(renderer.getBatch());
-            Proyectil [] gusProyect= Gusanos[i].getProyectiles();
-            for(int j=0;j<=Gusanos[i].getProyectilesCount();j++){
-                if(gusProyect[j]!=null){
-                    if(gusProyect[j].getStateTime()<=1){
-                        gusProyect[j].sprite.setX(Gusanos[i].sprite.getX());
-                        gusProyect[j].sprite.setY(Gusanos[i].sprite.getY());
+                oldXE = Gusanos[i].getSprite().getX();
+                oldYE = Gusanos[i].getSprite().getY();
+                Gusanos[i].caminar();
+                actualiceEnemyX(oldXE,Gusanos[i]);
+                actualiceEnemyY(oldYE,Gusanos[i]);
+                Gusanos[i].addStateTime(Gdx.graphics.getDeltaTime());
+                Gusanos[i].animate(renderer.getBatch());
+                Proyectil [] gusProyect= Gusanos[i].getProyectiles();
+                for(int j=0;j<=Gusanos[i].getProyectilesCount();j++){
+                    if(gusProyect[j]!=null){
+                        if(gusProyect[j].getStateTime()<=1){
+                            gusProyect[j].sprite.setX(Gusanos[i].sprite.getX());
+                            gusProyect[j].sprite.setY(Gusanos[i].sprite.getY());
                     }
-                    
                     oldXE = gusProyect[j].getSprite().getX();
                     oldYE = gusProyect[j].getSprite().getY();
                     gusProyect[j].caminar();
@@ -328,7 +368,7 @@ public class Room {
                 }  
             }
             Gusanos[i].playerNear(player.getSprite().getX(), player.getSprite().getY());
-             }
+            }
         }
     }
     

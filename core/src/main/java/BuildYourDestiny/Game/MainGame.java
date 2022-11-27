@@ -1,5 +1,6 @@
 package BuildYourDestiny.Game;
 
+import Maps.Room;
 import Screens.Splash;
 import Screens.Levels;
 import Screens.MainMenu;
@@ -11,7 +12,7 @@ public class MainGame extends Game {
     
     @Override
     public void create() {
-        setScreen(new searchScreen());
+        setScreen(new Levels());
     }
 
     @Override

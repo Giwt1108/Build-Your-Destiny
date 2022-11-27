@@ -27,14 +27,14 @@ public class Jugador extends Entidad implements InputProcessor{
     private Habilidad habilidad; //Aqui es un objeto Habilidad
     private int misiones; //Aqui es una estructura de misiones
     private TextureAtlas atlas;
-    private Animation<TextureRegion> animationWalk,animationRest,animationAttack;
+    private Animation<TextureRegion> animationWalk,animationRest,animationAttack, animationRunning;
     private float stateTime;
     private float CoolDownAttack=0;
-    private float CoolDownDash=0;
+    private float CoolDownRun=0;
     private boolean attacking=false;
-    private boolean dashing=false;
+    private boolean running=false;
     private boolean canAttack=true; 
-    private boolean canDash=true;
+    private boolean canRun=true;
     public boolean moridoBienMorido=false;
    //El Multiplicador nos va a permitir saber por cuanto queremos cambiar ciertos aspectos de nuestro jugador
     private int multiplicador=1;
@@ -80,7 +80,10 @@ public class Jugador extends Entidad implements InputProcessor{
             batch.draw(animationAttack.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
             //System.out.println("Deberia estar atacando");
         }else{
-            if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedY()){
+            if(this.running==true){
+                batch.draw(animationRunning.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
+            }
+            else if((getVelocidadX()==0 && getVelocidadY()==0) || isCollitedX() || isCollitedY()){
                 batch.draw(animationRest.getKeyFrame(stateTime),getSprite().getX(),getSprite().getY());
                 //System.out.println("Deberia estar descansando");
             }else{
@@ -100,6 +103,9 @@ public class Jugador extends Entidad implements InputProcessor{
         atlas = new TextureAtlas("Images/Player/PPMovAtq/PPAttack.atlas");
         Array<TextureAtlas.AtlasRegion>  attack = atlas.findRegions("PPAttack");
         animationAttack = new Animation(0.15f,attack, Animation.PlayMode.LOOP);
+        atlas = new TextureAtlas("Images/Player/PPCorriendo/PPCorriendo.atlas");
+        Array<TextureAtlas.AtlasRegion>  running = atlas.findRegions("PPCorriendo");
+        animationRunning = new Animation(0.15f,running, Animation.PlayMode.LOOP);
         stateTime=0;
     }
 
@@ -139,9 +145,10 @@ public class Jugador extends Entidad implements InputProcessor{
         if(this.CoolDownAttack-1.5<stateTime){
             this.attacking=false;
         }
-        if(this.CoolDownDash-6<stateTime){
+        if(this.CoolDownRun-6<stateTime){
             this.multiplicador=1;
-            this.CoolDownDash=0;
+            this.running=false;
+            this.CoolDownRun=0;
         }
         
     }
@@ -262,10 +269,10 @@ public class Jugador extends Entidad implements InputProcessor{
                 sprite.flip(true, false);
                 break;
             case ' ':
-                if(this.CoolDownDash==0){
-                    this.multiplicador=this.multiplicador*2;
-                    this.dashing=true;
-                    this.CoolDownDash=this.stateTime+7;
+                if(this.CoolDownRun==0){
+                    this.multiplicador= this.multiplicador*2;
+                    this.running=true;
+                    this.CoolDownRun=this.stateTime+7;
                 }
         }
         return false;

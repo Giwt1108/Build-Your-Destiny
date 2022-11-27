@@ -59,6 +59,7 @@ public class Room {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private Music music= Gdx.audio.newMusic(Gdx.files.internal("Music/GameloopOne.mp3"));
+    private Music musik,musicF;
     private TiledMapTileLayer collisionLayer;
     private Jugador player;
     //Texturas de la interfaz
@@ -77,6 +78,7 @@ public class Room {
     private boolean pause=false;
     private boolean fullScreen=true;
     private boolean bosstime=false;
+    private boolean cainIsDead=false;
     
     private int amountOfCrocos=0;
     private int CrocsKilled=0;
@@ -219,21 +221,47 @@ public class Room {
             this.pause=true;
         }
         if(!this.pause){
-            
+            if(cainIsDead==true){
+                renderer.getBatch().setColor(Color.CLEAR);
+                for(int i=0;i<amountOfCrocos;i++){
+                    if(Crocos[i]!=null){
+                        Crocos[i].kill();
+                        
+                    }
+                    
+                }
+                for(int i=0;i<Gusanos.length;i++){
+                    if(Gusanos[i]!=null){
+                        Gusanos[i].kill();
+                        
+                    }
+                    
+                }
+                musik.pause();
+                musicF= Gdx.audio.newMusic(Gdx.files.internal("Music/Debussy_Reflets_dans_leau.mp3"));
+                musicF.setLooping(full);
+                musicF.setVolume(1f);
+                musicF.play();
+                player.sprite.setX(300000);
+                player.sprite.setY(300000);
+                camera.rotate((float) 0.01);
+                
+            }
 
             if(bosstime==false && CrocsKilled>20 || GusanosKilled>20 && bosstime==false){
                 renderer.getBatch().setColor(Color.SCARLET);
                 music.pause();
-
-                Music musik= Gdx.audio.newMusic(Gdx.files.internal("Music/turbio.mp3"));
+                camera.rotate(10);
+                musik= Gdx.audio.newMusic(Gdx.files.internal("Music/turbio.mp3"));
                 
                 musik.setLooping(full);
                 musik.setVolume(0.8f);
                 musik.play();
                 bosstime=true;
             }
-            if( CrocsKilled>20 || GusanosKilled>20 ){
-                renderer.getBatch().setColor(Color.SCARLET);   
+            if( cainIsDead==false && CrocsKilled>20 || cainIsDead==false && GusanosKilled>20 ){
+                renderer.getBatch().setColor(Color.SCARLET);
+                camera.rotate((float) -0.05);
             }
             renderer.setView(camera);
 
@@ -245,19 +273,26 @@ public class Room {
             
             renderCrocks();
             renderGusanos();
-            if(CrocsKilled>20 || GusanosKilled>20){
+            if(cainIsDead==false && CrocsKilled>20 || cainIsDead==false && GusanosKilled>20){
                 
                 renderJefe();
                 
             }
+            
             //Render de interfaz
-            int damageBar=((Gdx.graphics.getWidth()/4)/97)*(int)player.getSalud() ;
-            renderer.getBatch().draw(blank, player.sprite.getX()-Gdx.graphics.getWidth()/3-40, player.sprite.getY()+Gdx.graphics.getHeight()/3-30,Gdx.graphics.getWidth()/4-14,80);
-            renderer.getBatch().draw(playerLife, player.sprite.getX()-Gdx.graphics.getWidth()/4-35, 5+player.sprite.getY()+Gdx.graphics.getHeight()/3+3,damageBar/2+4,7);
-            options.setPosition((float) (player.getSprite().getX()+Gdx.graphics.getWidth()/3.3), (float) (player.getSprite().getY()+Gdx.graphics.getHeight()/3.3));
-            options.draw(renderer.getBatch(), 20);
-            playerBackPack.setPosition(player.getSprite().getX()+Gdx.graphics.getWidth()/4, (float) (player.getSprite().getY()+Gdx.graphics.getHeight()/3.3));
-            playerBackPack.draw(renderer.getBatch(), 20);
+            if(cainIsDead==false){
+                int damageBar=((Gdx.graphics.getWidth()/4)/97)*(int)player.getSalud() ;
+                renderer.getBatch().draw(blank, player.sprite.getX()-Gdx.graphics.getWidth()/3-40, player.sprite.getY()+Gdx.graphics.getHeight()/3-30,Gdx.graphics.getWidth()/4-14,80);
+                renderer.getBatch().draw(playerLife, player.sprite.getX()-Gdx.graphics.getWidth()/4-35, 5+player.sprite.getY()+Gdx.graphics.getHeight()/3+3,damageBar/2+4,7);
+                options.setPosition((float) (player.getSprite().getX()+Gdx.graphics.getWidth()/3.3), (float) (player.getSprite().getY()+Gdx.graphics.getHeight()/3.3));
+                options.draw(renderer.getBatch(), 20);
+                playerBackPack.setPosition(player.getSprite().getX()+Gdx.graphics.getWidth()/4, (float) (player.getSprite().getY()+Gdx.graphics.getHeight()/3.3));
+                playerBackPack.draw(renderer.getBatch(), 20);
+            
+            
+            
+            }
+            
 
             float oldX, oldY;
             oldX = player.getSprite().getX();
@@ -374,14 +409,22 @@ public class Room {
     
     public void renderJefe(){
             float oldXE,oldYE;
-            oldXE = jefeOne.getSprite().getX();
-            oldYE = jefeOne.getSprite().getY();
-            jefeOne.caminar();
-            actualiceEnemyX(oldXE,jefeOne);
-            actualiceEnemyY(oldYE,jefeOne);
-            jefeOne.addStateTime(Gdx.graphics.getDeltaTime());
-            jefeOne.animate(renderer.getBatch());
-            player.underAttack(jefeOne.playerNear(player.sprite.getX(), player.sprite.getY()),0.1f);
+            AtaqueCorto atk= new AtaqueCorto(); 
+            if(atk.ataqueCorto(player, jefeOne)==false){
+                oldXE = jefeOne.getSprite().getX();
+                oldYE = jefeOne.getSprite().getY();
+                jefeOne.caminar();
+                actualiceEnemyX(oldXE,jefeOne);
+                actualiceEnemyY(oldYE,jefeOne);
+                jefeOne.addStateTime(Gdx.graphics.getDeltaTime());
+                jefeOne.animate(renderer.getBatch());
+                player.underAttack(jefeOne.playerNear(player.sprite.getX(), player.sprite.getY()),0.1f);
+                
+            }
+            else{
+                cainIsDead=true;
+            }
+            
     }
     public void dispose(){
         map.dispose();

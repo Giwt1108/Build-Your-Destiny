@@ -266,7 +266,7 @@ public class TmxGestor {
             while((row = buffer.readLine())!=null){
                 initData.add(row+"\r\n");
             }
-        }catch(Exception e){System.out.println("Algo salió mal en el init");}
+        }catch(Exception e){System.out.println("Algo salio mal en el init");}
         
         matrix[coords.get(0)[0]][coords.get(0)[1]] = initData;
         for(int i = 0; i<stringPath.length()-1;i++){
@@ -315,7 +315,7 @@ public class TmxGestor {
             while((row = buffer.readLine())!=null){
                 finishData.add(row+"\r\n");
             }
-        }catch(Exception e){System.out.println("Algo salió mal en el finish");}
+        }catch(Exception e){System.out.println("Algo salio mal en el finish");}
         
         matrix[coords.get(coords.size()-1)[0]][coords.get(coords.size()-1)[1]] = finishData;
     }
@@ -377,7 +377,7 @@ public class TmxGestor {
             while((row = buffer.readLine())!=null){
                 upDownData.add(row+"\r\n");
             }
-        }catch(Exception e){System.out.println("Algo salió mal en el rect");}
+        }catch(Exception e){System.out.println("Algo salio mal en el rect");}
     }
 
     private void getEdgesData() {
@@ -410,7 +410,7 @@ public class TmxGestor {
             while((row = buffer.readLine())!=null){
                 downLeftData.add(row+"\r\n");
             }
-        }catch(Exception e){System.out.println("Algo salió mal en edges");}
+        }catch(Exception e){System.out.println("Algo salio mal en edges");}
     }
     
     public Integer[] getInitPoint(){

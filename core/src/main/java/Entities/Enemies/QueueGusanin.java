@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.Array;
  */
 public class QueueGusanin extends Enemigo{
     private float CoolDownAttack=0;
-    private Proyectil [] proyectiles= new Proyectil[20];
+    private proyectil[] proyectiles= new proyectil[20];
     private int proyecCounter=0;
     public QueueGusanin() {
         //Estamina, alcance, suerte, velocidadAtaque, ataque, salud, sprite
@@ -58,7 +58,7 @@ public class QueueGusanin extends Enemigo{
             this.setVelocidadX(0);
             if(this.CoolDownAttack<this.stateTime){
                 this.isAttacking=true;
-                this.proyectiles[this.proyecCounter]= new Proyectil(shootX,shootY);
+                this.proyectiles[this.proyecCounter]= new proyectil(shootX,shootY);
                 this.CoolDownAttack=this.stateTime+5;
             }
             
@@ -101,7 +101,7 @@ public class QueueGusanin extends Enemigo{
         animationAttack = new Animation(0.15f,attack, Animation.PlayMode.LOOP);
         stateTime=0;
     }
-    public Proyectil[] getProyectiles(){
+    public proyectil[] getProyectiles(){
         return this.proyectiles;
     }
     public int getProyectilesCount(){

@@ -8,22 +8,18 @@ import Entities.AtaqueCorto;
 import Entities.Coleccionable;
 import Entities.Enemies.Enemigo;
 import Entities.Enemies.LinkedCroc;
-import Entities.Enemies.Proyectil;
+import Entities.Enemies.proyectil;
 import Entities.Enemies.QueueGusanin;
 import Entities.Enemies.cainBoss;
 import Entities.Jugador;
 import Screens.Levels;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
@@ -33,15 +29,12 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import estructuras.DoubleLinkedList;
@@ -385,7 +378,7 @@ public class Room {
                 actualiceEnemyY(oldYE,Gusanos[i]);
                 Gusanos[i].addStateTime(Gdx.graphics.getDeltaTime());
                 Gusanos[i].animate(renderer.getBatch());
-                Proyectil [] gusProyect= Gusanos[i].getProyectiles();
+                proyectil[] gusProyect= Gusanos[i].getProyectiles();
                 for(int j=0;j<=Gusanos[i].getProyectilesCount();j++){
                     if(gusProyect[j]!=null){
                         if(gusProyect[j].getStateTime()<=1){
